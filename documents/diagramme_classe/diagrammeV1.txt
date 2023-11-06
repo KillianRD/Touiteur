@@ -1,0 +1,76 @@
+@startuml
+
+skin rose
+
+title Relationships - Class Diagram
+
+
+class Touit {
+  -texte : string
+  -auteur : Utilisateur
+  -date : string
+  -note : int
+  -nbTags : ArrayList<Tag>
+  -image : String
+  +__construct(string texte, string filename)
+  +__get(string at)
+  + __set(string at, mixed val)
+}
+
+class User {
+- ArrayList<Touit> : touitPubliés
+- ArrayList<Touit> : touitUser
+- ArrayList<Touit> : touitTag
+- role :string
+}
+
+class Membre {
+- pseudo : string
+- nom : string
+- email : string
+- mdp : string
+- ArrayList<Membre> : abonnements
+- ArrayList<Membre> : abonnés
+- ArrayList<Tag> : tagSuivis
+- ArrayList<Touit> : listTouits
++ publierTouit() : void
++ supprimerTouit() : void
++ liker(Touit t) :void
++ dislike(Touit t) :void
++ suivreTag(Tag t) : void
+}
+
+interface Renderer {
+- int : COMPACT = 1
+- int : LONG = 2
++ render(int selector) : string
+}
+
+class TouitRenderer {
++ Touit : touit
++ __construct(Touit touit)
++ render(int:selector)
++ short() : string
++ long() :string
+}
+
+class ListTouitRenderer {
++ ArrayList<Touit> : listTouit
++ __construct(ArrayList<Touit> : listTouit)
++ render(int:selector)
++ short() : string
++ long() :string
+}
+
+class Tag {
+}
+
+Membre -right---> Touit : -listTouits
+User -right---> Tag: -touitTags
+Membre  -up---|> User
+TouitRenderer -up-..|> Renderer
+ListTouitRenderer -up-..|>Renderer
+
+
+
+@enduml
