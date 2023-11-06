@@ -14,17 +14,10 @@ class Touit {
   -image : String
   +__construct(string texte, string filename)
   +__get(string at)
-  + __set(string at, mixed val)
 }
+
 
 class User {
-- ArrayList<Touit> : touitPubliés
-- ArrayList<Touit> : touitUser
-- ArrayList<Touit> : touitTag
-- role :string
-}
-
-class Membre {
 - pseudo : string
 - nom : string
 - email : string
@@ -33,6 +26,10 @@ class Membre {
 - ArrayList<Membre> : abonnés
 - ArrayList<Tag> : tagSuivis
 - ArrayList<Touit> : listTouits
+- ArrayList<Touit> : touitPubliés
+- role :string
++ getTouitUser(User u) : listTouits
++ getTag(Tag t) : listTags
 + publierTouit() : void
 + supprimerTouit() : void
 + liker(Touit t) :void
@@ -65,9 +62,7 @@ class ListTouitRenderer {
 class Tag {
 }
 
-Membre -right---> Touit : -listTouits
-User -right---> Tag: -touitTags
-Membre  -up---|> User
+User -right---> Touit : -listTouits
 TouitRenderer -up-..|> Renderer
 ListTouitRenderer -up-..|>Renderer
 
