@@ -1,0 +1,9 @@
+.idea
+*.iml
+
+##### Composer
+composer.phar
+/vendor/
+composer.lock
+
+/conf/
