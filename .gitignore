@@ -6,4 +6,4 @@ composer.phar
 /vendor/
 composer.lock
 
-/conf/
+src/conf/
