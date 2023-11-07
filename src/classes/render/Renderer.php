@@ -8,4 +8,6 @@ interface Renderer
     public const LONG = 2;
 
     public function render(int $selector): string;
+    public function long();
+    public function short();
 }
