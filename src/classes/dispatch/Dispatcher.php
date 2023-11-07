@@ -6,6 +6,7 @@ namespace iutnc\deefy\dispatch;
 use iutnc\touiteur\actions\AddUserAction;
 use iutnc\touiteur\actions\HomeAction;
 use iutnc\touiteur\actions\LogoutAction;
+use iutnc\touiteur\actions\ProfilAction;
 use iutnc\touiteur\actions\SigninAction;
 use iutnc\touiteur\actions\TagAction;
 
@@ -41,6 +42,10 @@ class Dispatcher
                 $a = new TagAction();
                 $html = $a->execute();
                 break;
+            case 'profil' :
+                $a = new ProfilAction();
+                $html = $a->execute();
+                break;
             default :
                 $html = <<<END
                     Bienvenue sur le site de SpotiBuz!
@@ -65,7 +70,7 @@ class Dispatcher
             <body>
                 <h1>SpotiBuz</h1>
                 <nav><ul>
-                    <img src="./images/house.svg" alt="Maison representant l'accueil"/><a href='.'>Accueil</a><br>
+                    <img src="./images/house.svg" alt="Maison representant l'accueil"/><a href='?action=home'>Accueil</a><br>
                     <img src="./images/person-add.svg" alt="Personne representant un ajout de compte"/><a href='?action=add-user'>Inscription</a><br>
                     <img src="./images/person.svg" alt="Personne representant un compte deja existant"/><a href='?action=signin'>Se connecter</a><br>
                     <img src="./images/plus-circle.svg" alt="Plus representant le l'ajout d'une playlist"/><a href='?action=add-playlist'>Creer une playlist</a><br>

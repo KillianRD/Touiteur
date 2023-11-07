@@ -12,12 +12,12 @@ class LogoutAction extends Actions
     {
         $html = '';
         if ($this->http_method === 'GET') {
-            return <<<END
+            $html = <<<END
                 <form method='post' action='?action=logout'>
                 <button type='submit'>Se deconnecter</button><br><br>
                 </form>
             END;
-        } elseif($this->http_method === 'POST') {
+        } else {
             //supp cookies de session
             unset($_SESSION['user']);
 

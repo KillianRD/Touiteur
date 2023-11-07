@@ -1,11 +1,13 @@
 <?php
 
 namespace iutnc\touiteur\actions;
+
 use iutnc\deefy\action\Actions;
 use iutnc\touiteur\auth\Inscription;
 use iutnc\touiteur\exceptions\AuthException;
 
 ;
+
 class AddUserAction extends Actions
 {
 
@@ -13,7 +15,7 @@ class AddUserAction extends Actions
     {
         $html = ' ';
         if ($this->http_method === 'GET') {
-            return <<<END
+            $html = <<<END
                 <form method='post' action='?action=add-user'><br><br>
                 <label>Nom: </label><input type='text' placeholder='<Nom>' name='nom'<br>
                 <label>Prénom: </label><input type='text' placeholder='<Prenom>' name='prenom'<br>
@@ -24,7 +26,7 @@ class AddUserAction extends Actions
                 <button type='submit'>s'inscrire</button><br><br>
                 </form>
                 END;
-        } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        } else {
             $nom = filter_var($_POST['nom'], FILTER_SANITIZE_EMAIL);
             $prenom = filter_var($_POST['prenom'], FILTER_SANITIZE_EMAIL);
             $pseudo = filter_var($_POST['pseudo'], FILTER_SANITIZE_EMAIL);

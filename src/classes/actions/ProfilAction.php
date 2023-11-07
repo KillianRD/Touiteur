@@ -8,7 +8,7 @@ class ProfilAction
     {
         $html = '';
         if ($this->http_method === 'GET') {
-            return <<<END
+            $html = <<<END
                 <a href='?action=profil&sousAction=abonne'>Abonné</a>
                 <a href='?action=profil&sousAction=abonnement'>Abonnement</a>
             END;

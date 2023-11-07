@@ -12,7 +12,7 @@ class SigninAction extends Actions
     {
         $html = '';
         if ($this->http_method === 'GET') {
-            return <<<END
+            $html = <<<END
                 <form method='post' action='?action=signin'>
                 <h1>Bienvenue sur Touiteur</h1>
                 Email : <input type='text' name='email'>
@@ -21,7 +21,7 @@ class SigninAction extends Actions
                 Vous vous êtes jamais inscrit <a href='?action=add-user'>Inscrivez vous dès maintenant</a>
                 </form>
             END;
-        } elseif($this->http_method === 'POST') {
+        } else {
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $password = $_POST['mdp'];
             try {

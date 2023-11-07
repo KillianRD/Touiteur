@@ -8,14 +8,14 @@ class TagAction extends Actions
     {
         $html = '';
         if ($this->http_method === 'GET') {
-            return <<<END
+            $html = <<<END
                 <form method='post' action='?action=tag'>
                 <label for="recherche">Chercher un tag : </label>
                 <input type="text" id="recherche" name="recherche" placeholder="Recherche">
                 <input type="submit" value="Rechercher">
                 </form>
             END;
-        } elseif($this->http_method === 'POST') {
+        } else {
             $recherche = filter_var($_POST['recherche'], FILTER_SANITIZE_STRING);
 
             $html = <<<END
