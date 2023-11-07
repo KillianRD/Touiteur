@@ -6,6 +6,7 @@ require_once 'vendor/autoload.php';
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
 use iutnc\touiteur\exceptions\TagDejaSuiviException;
 use iutnc\touiteur\exceptions\TouitInexistantException;
+use iutnc\touiteur\lists\ListTouit;
 
 class User {
 
@@ -17,7 +18,8 @@ class User {
 
     private array $abonnements = []; //liste des abonnements du membre
     private array $abonnés = []; //liste des abonnés du membre
-    private array $listTouits = []; //liste des touits du membre
+
+    private ListTouit $listTouits; //liste des touits du membre
     private array $tagsSuivis = []; //liste des tags suivis par le membre
     protected array $touitPubliés = [] ; //liste des touits que peut consulter un utilisateur
 
@@ -42,7 +44,7 @@ class User {
      */
     public function publierTouit(string $t, string $fileimage ='') :void {
         $touit = new Touit($t,$this->pseudo,date("d-m-Y H:i:s"),$fileimage);
-        array_push($this->listTouits,$touit);
+        $this->listTouits->add($touit);
     }
 
     /**
@@ -50,12 +52,7 @@ class User {
      * @return void
      */
     public function supprimerTouit(Touit $touit) :void {
-        $index = array_search($touit, $this->listTouits);
-        if ($index !== false) {
-            unset($this->listTouits[$index]);
-        } else {
-            throw new TouitInexistantException("Le touit n'existe pas");
-        }
+        $this->listTouits->suppr($touit);
     }
 
     /**
@@ -97,7 +94,7 @@ class User {
      * @param User $user
      * @return array liste des touits d'un utilisateur donné
      */
-    public function getTouitUser(User $user): array {
+    public function getTouitUser(User $user): ListTouit {
         return $user->__get("listTouits");
     }
 
