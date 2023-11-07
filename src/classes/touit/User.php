@@ -46,9 +46,14 @@ class User {
      * Methode pour permettre au membre de créer un nouveau touit
      * @return void
      */
-    public function publierTouit(string $t, string $fileimage ='') :void {
+    public function publierTouit(string $t, string $fileimage ='') : Touit {
         $touit = new Touit($t,$this,date("d-m-Y H:i"),$fileimage);
+        foreach ($touit->listTags as $tag) {
+            $tagres= new Tag("{$tag}");
+            $tagres->listTouits->add($touit);
+        }
         $this->listTouits->add($touit);
+        return $touit;
     }
 
     /**
