@@ -1,6 +1,6 @@
 <?php
 
-namespace iutnc\deefy\dispatch;
+namespace iutnc\touiteur\dispatch;
 
 
 use iutnc\touiteur\actions\AddUserAction;
