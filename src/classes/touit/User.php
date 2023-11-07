@@ -39,6 +39,7 @@ class User {
         $this->nom = $nom;
         $this->email = $email;
         $this->role = $role;
+        $this->listTouits = new ListTouit();
     }
 
     /**
@@ -46,7 +47,7 @@ class User {
      * @return void
      */
     public function publierTouit(string $t, string $fileimage ='') :void {
-        $touit = new Touit($t,$this->pseudo,date("d-m-Y H:i"),$fileimage);
+        $touit = new Touit($t,$this,date("d-m-Y H:i"),$fileimage);
         $this->listTouits->add($touit);
     }
 
@@ -86,7 +87,7 @@ class User {
     }
 
     /**
-     * Methode pour récuperer la listes des touits d'un utilisateur donné
+     * Methode pour récuperer la listes des touits d'un abonnement
      * @param User $user
      * @return ListTouit liste des touits d'un utilisateur donné
      */
