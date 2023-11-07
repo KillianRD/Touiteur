@@ -18,9 +18,11 @@ class User {
     private array $abonnements = []; //liste des abonnements du membre
     private array $abonnés = []; //liste des abonnés du membre
     private array $listTouits = []; //liste des touits du membre
-
     private array $tagsSuivis = []; //liste des tags suivis par le membre
     protected array $touitPubliés = [] ; //liste des touits que peut consulter un utilisateur
+
+    public static int $STANDARD_ROLE = 1;
+    public static int $ADMIN_ROLE = 100;
 
     /**
      * @param string $pseudo
