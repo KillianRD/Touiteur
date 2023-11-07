@@ -5,6 +5,7 @@ namespace iutnc\touiteur\lists;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
 use iutnc\touiteur\exceptions\InvalidArgumentException;
 use iutnc\touiteur\exceptions\TouitInexistantException;
+use iutnc\touiteur\touit\Touit;
 
 class ListTouit {
     private int $nbTouits;
