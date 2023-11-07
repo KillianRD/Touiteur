@@ -4,6 +4,7 @@ namespace iutnc\touiteur\touit;
 
 use iutnc\touiteur\exceptions\InvalideTouitException;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
+use iutnc\touiteur\lists\ListTags;
 
 require_once 'vendor/autoload.php';
 
@@ -25,14 +26,15 @@ class Touit
      * @var int $note : Nombre de likes du touit
      */
     private int $note;
-    /**
-     * @var array $nbTags : Nombre de tags du touit
-     */
-    private array $nbTags;
+
     /**
      * @var ?string $image : Image du touit, pas obligatoire
      */
     private ?string $image;
+    /**
+     * @var array : Liste des Tags du touit
+     */
+    private ListTags $listTags ;
 
     /**
      * @param string $text
@@ -44,9 +46,7 @@ class Touit
      * un texte, le pseudo de l'auteur du touit, la date de publication du touit et une possible image
      */
 
-    public function __construct(string $text, User $user, string $date, string $image='')
-    {
-
+    public function __construct(string $text, User $user, string $date, string $image='') {
         if (strlen($text) > 235) {
             throw new InvalideTouitException("Le touit est trop long");
         }else {
@@ -55,7 +55,8 @@ class Touit
         $this->user = $user;
         $this->date = $date;
         $this->note = 0;
-        $this->nbTags = [];
+        $this->listTags = new ListTags();
+        $this->getHashtags();
         $this->image = $image;
     }
 
@@ -76,6 +77,14 @@ class Touit
             $this->$at = $val;
         } else {
             throw new InvalidPropertyNameException (get_called_class()." attribut invalid". $at);
+        }
+    }
+
+    public function getHashtags(): void {
+        preg_match_all('/#(\w+)/', $this->texte, $matches);
+        foreach ($matches[1] as $tag) {
+            $Tag = new Tag($tag);
+            $this->listTags->ajoutTag($Tag);
         }
     }
 
