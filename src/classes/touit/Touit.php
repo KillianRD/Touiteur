@@ -14,9 +14,9 @@ class Touit
      */
     private string $texte;
     /**
-     * @var string $pseudo : Pseudo de l'auteur du touit
+     * @var User $user : Pseudo de l'auteur du touit
      */
-    private string $pseudo;
+    private User $user;
     /**
      * @var string $date : Date de publication du touit
      */
