@@ -1,8 +1,8 @@
 <?php
 
-namespace iutnc\touiteur\action;
+namespace iutnc\touiteur\actions;
 use iutnc\touiteur\auth\Authentification;
-use iutnc\touiteur\exception\AuthException;
+use iutnc\touiteur\exceptions\AuthException;
 
 class SigninAction extends Actions
 {
@@ -24,7 +24,7 @@ class SigninAction extends Actions
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $password = $_POST['mdp'];
             try {
-                Authentification\::authenticate($email, $password);
+                Authentification::authenticate($email, $password);
                 $user = unserialize($_SESSION['user']);
                 $html = <<<END
                     <h1>Bienvenue {$user->getPseudo()}</h1>
