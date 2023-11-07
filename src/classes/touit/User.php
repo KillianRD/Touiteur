@@ -3,9 +3,9 @@
 namespace iutnc\touiteur\touit;
 require_once 'vendor/autoload.php';
 
-use iutnc\touiteur\exeptions\InvalidPropertyNameException;
-use iutnc\touiteur\exeptions\TagDejaSuiviException;
-use iutnc\touiteur\exeptions\TouitInexistantException;
+use iutnc\touiteur\exceptions\InvalidPropertyNameException;
+use iutnc\touiteur\exceptions\TagDejaSuiviException;
+use iutnc\touiteur\exceptions\TouitInexistantException;
 
 class User {
 

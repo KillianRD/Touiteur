@@ -1,6 +1,6 @@
 <?php
 
-namespace iutnc\touiteur\exeptions;
+namespace iutnc\touiteur\exceptions;
 
 class TagDejaSuiviException extends \Exception
 {

@@ -2,8 +2,8 @@
 
 namespace iutnc\touiteur\touit;
 
-use iutnc\touiteur\exeptions\InvalideTouitException;
-use iutnc\touiteur\exeptions\InvalidPropertyNameException;
+use iutnc\touiteur\exceptions\InvalideTouitException;
+use iutnc\touiteur\exceptions\InvalidPropertyNameException;
 
 require_once 'vendor/autoload.php';
 
