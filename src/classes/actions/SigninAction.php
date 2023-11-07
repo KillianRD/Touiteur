@@ -1,6 +1,7 @@
 <?php
 
 namespace iutnc\touiteur\actions;
+use iutnc\deefy\action\Actions;
 use iutnc\touiteur\auth\Authentification;
 use iutnc\touiteur\exceptions\AuthException;
 

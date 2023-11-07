@@ -3,6 +3,12 @@
 namespace iutnc\deefy\dispatch;
 
 
+use iutnc\touiteur\actions\AddUserAction;
+use iutnc\touiteur\actions\HomeAction;
+use iutnc\touiteur\actions\LogoutAction;
+use iutnc\touiteur\actions\SigninAction;
+use iutnc\touiteur\actions\TagAction;
+
 class Dispatcher
 {
     private ?string $action;
@@ -19,20 +25,20 @@ class Dispatcher
                 $a = new AddUserAction();
                 $html = $a->execute();
                 break;
-            case 'add-playlist' :
-                $a = new AddPlaylist();
-                $html = $a->execute();
-                break;
-            case 'add-podcasttrack' :
-                $a = new AddPodcastTrack();
-                $html = $a->execute();
-                break;
             case 'signin' :
                 $a = new SigninAction();
                 $html = $a->execute();
                 break;
-            case 'display-playlist' :
-                $a = new DisplayPlaylistAction();
+            case 'logout' :
+                $a = new LogoutAction();
+                $html = $a->execute();
+                break;
+            case 'home' :
+                $a = new HomeAction();
+                $html = $a->execute();
+                break;
+            case 'tag' :
+                $a = new TagAction();
                 $html = $a->execute();
                 break;
             default :

@@ -1,16 +1,18 @@
 <?php
 
 namespace iutnc\touiteur\actions;
-use iutnc\touiteur\auth\Authentification;
-use iutnc\touiteur\exception\AuthException;
-user iutnc\touiteur\auth\Inscription;
+use iutnc\deefy\action\Actions;
+use iutnc\touiteur\auth\Inscription;
+use iutnc\touiteur\exceptions\AuthException;
+
+;
 class AddUserAction extends Actions
 {
 
     public function execute(): string
     {
         $html = ' ';
-        if ($this->http_methode === 'GET') {
+        if ($this->http_method === 'GET') {
             return <<<END
                 <form method='post' action='?action=add-user'><br><br>
                 <label>Nom: </label><input type='text' placeholder='<Nom>' name='nom'<br>
@@ -31,7 +33,7 @@ class AddUserAction extends Actions
             $confirm = $_POST['confirm'];
 
             try {
-                Authentification\::register($email, $password, $confirm, $nom, $prenom, $pseudo
+                Inscription::register($email, $password, $confirm, $nom, $prenom, $pseudo);
                 $html = <<<END
                 Votre compte a bien été créé.
                 END;

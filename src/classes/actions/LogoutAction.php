@@ -1,10 +1,9 @@
 <?php
 
-namespace iutnc\touiteur\action;
+namespace iutnc\touiteur\actions;
 
-use iutnc\deefy\auth\Auth;
-use iutnc\deefy\exception\AuthException;
-use iutnc\deefy\render\AudioListRenderer;
+
+use iutnc\deefy\action\Actions;
 
 class LogoutAction extends Actions
 {
@@ -14,7 +13,7 @@ class LogoutAction extends Actions
         $html = '';
         if ($this->http_method === 'GET') {
             return <<<END
-                <form method='post' action='?action=signin'>
+                <form method='post' action='?action=logout'>
                 <button type='submit'>Se deconnecter</button><br><br>
                 </form>
             END;
