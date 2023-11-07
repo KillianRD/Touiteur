@@ -2,6 +2,7 @@
 
 namespace iutnc\touiteur\touit;
 
+use iutn\touiter\db\ConnectionFactory;
 use iutnc\touiteur\exceptions\InvalideTouitException;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
 
@@ -79,6 +80,26 @@ class Touit
         }
     }
 
+    /**
+     * Methode qui permet de de répertorier tout les touites dans une listes de touites
+     * @return array liste de tous les touites
+     */
+    public function afficherTouites(): array
+    {
+        $connexion = ConnectionFactory::makeConnection();
+        $requete = $connexion->prepare("SELECT text, date, note, description, chemin FROM touite NATURAL JOIN touite2image NATURAL JOIN image");
+        $requete->execute();
+        foreach ($requete->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            $text = $row['text'];
+            $date = $row['date'];
+            $note = $row['note'];
+            $description = $row['description'];
+            $chemin = $row['chemin'];
+            $t = new Touit($text, $date, $note, $description, $chemin);
+            array_push($touites, $t);
+        }
 
+        return $touites;
+    }
 
 }
