@@ -2,14 +2,16 @@
 
 namespace iutnc\touiteur\touit;
 
+use iutnc\touiteur\lists\ListTouit;
+
 class Tag
 {
-    private array $listTouits = [];
+    private ListTouit $listTouits;
 
     /**
      * @param array $listTouits
      */
-    public function __construct(array $listTouits)
+    public function __construct(ListTouit $listTouits)
     {
         $this->listTouits = $listTouits;
     }
@@ -18,9 +20,8 @@ class Tag
      * @param Touit $t
      * Ajoute un touit à la liste des touits
      */
-    public function ajoutTouit(Touit $t): void
-    {
-        $this->listTouits[] = $t;
+    public function ajoutTouit(Touit $t): void {
+       $this->listTouits->add($t);
     }
 
     /**

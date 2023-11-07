@@ -6,7 +6,9 @@ require_once 'vendor/autoload.php';
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
 use iutnc\touiteur\exceptions\TagDejaSuiviException;
 use iutnc\touiteur\exceptions\TouitInexistantException;
+use iutnc\touiteur\lists\ListTags;
 use iutnc\touiteur\lists\ListTouit;
+use iutnc\touiteur\lists\ListUser;
 
 class User {
 
@@ -16,12 +18,12 @@ class User {
     private string $mdp;
     protected int $role; //role de l'utilisateur
 
-    private array $abonnements = []; //liste des abonnements du membre
-    private array $abonnés = []; //liste des abonnés du membre
+    private ListUser $abonnements; //liste des abonnements du membre
+    private ListUser $abonnés; //liste des abonnés du membre
 
     private ListTouit $listTouits; //liste des touits du membre
-    private array $tagsSuivis = []; //liste des tags suivis par le membre
-    protected array $touitPubliés = [] ; //liste des touits que peut consulter un utilisateur
+    private ListTags $tagsSuivis; //liste des tags suivis par le membre
+    protected ListTouit $touitPubliés; //liste des touits que peut consulter un utilisateur
 
     public static int $STANDARD_ROLE = 1;
     public static int $ADMIN_ROLE = 100;
@@ -81,12 +83,7 @@ class User {
      * @return void
      */
     public function suivreTag(Tag $t) :void {
-        $index = array_search($t, $this->tagsSuivis);
-        if($index !== true) {
-            array_push($this->tagsSuivis,$t);
-        } else {
-            throw new TagDejaSuiviException("Le tag est déja suivi");
-        }
+        $this->tagsSuivis->ajoutTag($t);
     }
 
     /**
