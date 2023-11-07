@@ -29,11 +29,11 @@ class User {
      * @param string $nom
      * @param string $email
      */
-    public function __construct(string $pseudo, string $nom, string $email) {
+    public function __construct(string $pseudo, string $nom, string $email, int $role) {
         $this->pseudo = $pseudo;
         $this->nom = $nom;
         $this->email = $email;
-        $this->role = 1;
+        $this->role = $role;
     }
 
     /**
