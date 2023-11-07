@@ -5,8 +5,8 @@ namespace iutnc\touiteur\lists;
 require_once 'vendor/autoload.php';
 
 use http\Exception\InvalidArgumentException;
+use iutnc\touiteur\exceptions\TagInexistantException;
 use iutnc\touiteur\exeptions\InvalidPropertyNameException;
-use iutnc\touiteur\exeptions\TagInexistantException;
 use iutnc\touiteur\touit\Tag;
 
 class ListTags
