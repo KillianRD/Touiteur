@@ -2,18 +2,19 @@
 
 namespace iutnc\touiteur\touit;
 
+use iutnc\touiteur\exceptions\InvalidPropertyNameException;
 use iutnc\touiteur\lists\ListTouit;
 
-class Tag
-{
+class Tag {
+    private string $nom;
     private ListTouit $listTouits;
 
     /**
      * @param array $listTouits
      */
-    public function __construct(ListTouit $listTouits)
-    {
-        $this->listTouits = $listTouits;
+    public function __construct(string $nom) {
+        $this->nom = $nom;
+        $this->listTouits = new ListTouit();
     }
 
     /**
@@ -25,11 +26,18 @@ class Tag
     }
 
     /**
-     * @return array
-     * Retourne la liste des touits
+     * @param string $at
+     * @return mixed
+     * @throws InvalidPropertyNameException
      */
-    public function getTouits(): array {
-        return $this->listTouits;
+    public function __get(string $at): mixed {
+        if (property_exists($this, $at)) {
+            return $this->$at;
+        }
+        throw new InvalidPropertyNameException("$at: propriété inconnue");
     }
+
+
+
 
 }

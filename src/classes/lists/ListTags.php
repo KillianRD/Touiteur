@@ -14,7 +14,7 @@ class ListTags
     private array $listTags = [];
     private int $nbTags;
 
-    public function __construct(array $listTags)
+    public function __construct(array $listTags =[])
     {
         if (!empty($listTags)) {
             foreach ($listTags as $tag) {
@@ -30,7 +30,7 @@ class ListTags
     public function ajoutTag(Tag $tag): void
     {
         array_push($this->listTags, $tag);
-        $this->nbTags++;
+
     }
 
     public function suppTag(Tag $tag): void
@@ -38,7 +38,7 @@ class ListTags
         $index = array_search($tag, $this->listTags);
         if ($index !== false) {
             unset($this->listTags[$index]);
-            $this->nbTags--;
+
         } else {
             throw new TagInexistantException("Le tag n'existe pas");
         }
