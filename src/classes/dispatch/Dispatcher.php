@@ -80,7 +80,7 @@ class Dispatcher
                 <nav><ul>
                     <a href='?action=home'>Accueil<img src="./images/" alt="Maison representant l'accueil"/></a><br>
                     <a href='?action=tag'>Voir un tag<img src="./images/" alt="Hastag representant les hastags"/></a><br>
-                    <a href='?action=profil'>Display<img src="./images/" alt="Personne representant un profil"/></a><br>
+                    <a href='?action=profil'>Profil<img src="./images/" alt="Personne representant un profil"/></a><br>
                     <a href='?action=signin'>Se connecter<img src="./images/" alt="Personne representant un compte deja existant"/></a><br>
                     <a href='?action=add-user'>Inscription<img src="./images/" alt="Personne representant un ajout de compte"/></a><br>         
                     <a href='?action=touiter'>Touiter<img src="./images/" alt="Mail representant la creation d'un touite"/></a><br>         
