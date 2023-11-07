@@ -3,6 +3,7 @@
 namespace iutnc\touiteur\touit;
 
 use iutnc\touiteur\exeptions\InvalideTouitException;
+use iutnc\touiteur\exeptions\InvalidPropertyNameException;
 
 require_once 'vendor/autoload.php';
 
@@ -13,9 +14,9 @@ class Touit
     private string $date;
     private int $note;
     private ?array $nbTags;
-    private string $image;
+    private ?string $image;
 
-    public function __construct(string $text, User $auteur, string $date, int $note, array $nbTags, string $image)
+    public function __construct(string $text, User $auteur, string $date, string $image='')
     {
 
         if (strlen($text) > 235) {
@@ -25,8 +26,8 @@ class Touit
         }
         $this->auteur = $auteur;
         $this->date = $date;
-        $this->note = $note;
-        $this->nbTags = $nbTags;
+        $this->note = 0;
+        $this->nbTags = [];
         $this->image = $image;
     }
 
