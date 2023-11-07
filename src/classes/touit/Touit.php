@@ -10,13 +10,13 @@ require_once 'vendor/autoload.php';
 class Touit
 {
     private string $texte;
-    private User $auteur;
+    private string $pseudo;
     private string $date;
     private int $note;
     private ?array $nbTags;
     private ?string $image;
 
-    public function __construct(string $text, User $auteur, string $date, string $image='')
+    public function __construct(string $text, string $pseudo, string $date, string $image='')
     {
 
         if (strlen($text) > 235) {
@@ -24,7 +24,7 @@ class Touit
         }else {
             $this->texte = $text;
         }
-        $this->auteur = $auteur;
+        $this->pseudo = $pseudo;
         $this->date = $date;
         $this->note = 0;
         $this->nbTags = [];
