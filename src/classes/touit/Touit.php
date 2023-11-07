@@ -36,7 +36,7 @@ class Touit
 
     /**
      * @param string $text
-     * @param string $pseudo
+     * @param User $user
      * @param string $date
      * @param string $image
      * @throws InvalideTouitException
@@ -44,7 +44,7 @@ class Touit
      * un texte, le pseudo de l'auteur du touit, la date de publication du touit et une possible image
      */
 
-    public function __construct(string $text, string $pseudo, string $date, string $image='')
+    public function __construct(string $text, User $user, string $date, string $image='')
     {
 
         if (strlen($text) > 235) {
@@ -52,7 +52,7 @@ class Touit
         }else {
             $this->texte = $text;
         }
-        $this->pseudo = $pseudo;
+        $this->user = $user;
         $this->date = $date;
         $this->note = 0;
         $this->nbTags = [];
@@ -71,14 +71,12 @@ class Touit
         throw new InvalidPropertyNameException("$at: propriété inconnue");
     }
 
-    /**
-     * @param int $note
-     *
-     * Methode qui permet d'ajouter un like au touit
-     */
-    public function setNote(int $note): void
-    {
-        $this->note = $note;
+    public function __set(string $at, mixed $val = null) {
+        if(property_exists($this,$at)) {
+            $this->$at = $val;
+        } else {
+            throw new InvalidPropertyNameException (get_called_class()." attribut invalid". $at);
+        }
     }
 
 }

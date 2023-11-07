@@ -32,6 +32,7 @@ class User {
      * @param string $pseudo
      * @param string $nom
      * @param string $email
+     * @param int $role
      */
     public function __construct(string $pseudo, string $nom, string $email, int $role) {
         $this->pseudo = $pseudo;
@@ -45,7 +46,7 @@ class User {
      * @return void
      */
     public function publierTouit(string $t, string $fileimage ='') :void {
-        $touit = new Touit($t,$this->pseudo,date("d-m-Y H:i:s"),$fileimage);
+        $touit = new Touit($t,$this->pseudo,date("d-m-Y H:i"),$fileimage);
         $this->listTouits->add($touit);
     }
 
@@ -63,8 +64,7 @@ class User {
      * @return void
      */
     public function liker(Touit $t): void {
-        $note = $t->__get("note");
-        $t->setNote($note ++) ;
+        $t->__set("note", $t->__get("note") + 1);
     }
 
     /**
@@ -72,9 +72,8 @@ class User {
      * @param Touit $t
      * @return void
      */
-    public function dislike(Touit $t) : void {
-        $note = $t->__get("note");
-        $t->setNote($note --) ;
+    public function disliker(Touit $t): void {
+        $t->__set("note", $t->__get("note") - 1);
     }
 
     /**
@@ -89,7 +88,7 @@ class User {
     /**
      * Methode pour récuperer la listes des touits d'un utilisateur donné
      * @param User $user
-     * @return array liste des touits d'un utilisateur donné
+     * @return ListTouit liste des touits d'un utilisateur donné
      */
     public function getTouitUser(User $user): ListTouit {
         return $user->__get("listTouits");
@@ -98,9 +97,9 @@ class User {
     /**
      * Methode pour récuperer la liste des touits d'un tag donné
      * @param Tag $tag
-     * @return array liste des touits d'un tag donné
+     * @return ListTouit liste des touits d'un tag donné
      */
-    public function getTags(Tag $tag) : array {
+    public function getTags(Tag $tag) : ListTouit {
         return $tag->getTouits();
     }
 
