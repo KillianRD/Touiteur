@@ -1,10 +1,6 @@
 <?php
 
-<<<<<<< HEAD
 namespace iutnc\touiteur\dispatch;
-=======
-namespace iutnc\touiter\dispatch;
->>>>>>> origin/main
 
 
 use iutnc\touiteur\actions\AddUserAction;
