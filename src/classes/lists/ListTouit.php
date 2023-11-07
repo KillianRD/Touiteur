@@ -8,7 +8,7 @@ use iutnc\touiteur\exceptions\TouitInexistantException;
 use iutnc\touiteur\touit\Touit;
 
 class ListTouit {
-    private int $nbTouits;
+    private int $nbTouits =0;
     private array $touits = [];
 
     /**
