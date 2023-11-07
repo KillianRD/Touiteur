@@ -1,6 +1,11 @@
 <?php
 
 namespace iutnc\touiteur\touit;
+require_once 'vendor/autoload.php';
+
+use iutnc\touiteur\exeptions\InvalidPropertyNameException;
+use iutnc\touiteur\exeptions\TagDejaSuiviException;
+use iutnc\touiteur\exeptions\TouitInexistantException;
 
 class User {
 
@@ -8,39 +13,47 @@ class User {
     private string $nom;
     private string $email;
     private string $mdp;
+    protected int $role; //role de l'utilisateur
+
     private array $abonnements = []; //liste des abonnements du membre
     private array $abonnés = []; //liste des abonnés du membre
-    private array $tagsSuivis = []; //liste des tags suivis par le membre
     private array $listTouits = []; //liste des touits du membre
+
+    private array $tagsSuivis = []; //liste des tags suivis par le membre
     protected array $touitPubliés = [] ; //liste des touits que peut consulter un utilisateur
-    protected int $role; //role de l'utilisateur
+
     /**
      * @param string $pseudo
      * @param string $nom
      * @param string $email
-     * @param string $mdp
      */
-    public function __construct(string $pseudo, string $nom, string $email, string $mdp) {
+    public function __construct(string $pseudo, string $nom, string $email) {
         $this->pseudo = $pseudo;
         $this->nom = $nom;
         $this->email = $email;
-        $this->mdp = $mdp;
+        $this->role = 1;
     }
 
     /**
-     * Methode pour permettre au membre de créer un nouvau touit
+     * Methode pour permettre au membre de créer un nouveau touit
      * @return void
      */
-    public function publierTouit() :void {
-
+    public function publierTouit(string $t, string $fileimage ='') :void {
+        $touit = new Touit($t,$this->pseudo,date("d-m-Y H:i:s"),$fileimage);
+        array_push($this->listTouits,$touit);
     }
 
     /**
      * Methode pour permettre au membre de supprimer un touit
      * @return void
      */
-    public function supprimerTouit() :void {
-
+    public function supprimerTouit(Touit $touit) :void {
+        $index = array_search($touit, $this->listTouits);
+        if ($index !== false) {
+            unset($this->listTouits[$index]);
+        } else {
+            throw new TouitInexistantException("Le touit n'existe pas");
+        }
     }
 
     /**
@@ -49,7 +62,8 @@ class User {
      * @return void
      */
     public function liker(Touit $t): void {
-
+        $note = $t->__get("note");
+        $t->setNote($note ++) ;
     }
 
     /**
@@ -58,7 +72,8 @@ class User {
      * @return void
      */
     public function dislike(Touit $t) : void {
-
+        $note = $t->__get("note");
+        $t->setNote($note --) ;
     }
 
     /**
@@ -67,7 +82,12 @@ class User {
      * @return void
      */
     public function suivreTag(Tag $t) :void {
-
+        $index = array_search($t, $this->tagsSuivis);
+        if($index !== true) {
+            array_push($this->tagsSuivis,$t);
+        } else {
+            throw new TagDejaSuiviException("Le tag est déja suivi");
+        }
     }
 
     /**
@@ -76,8 +96,7 @@ class User {
      * @return array liste des touits d'un utilisateur donné
      */
     public function getTouitUser(User $user): array {
-        $res = [];
-        return $res ;
+        return $user->__get("listTouits");
     }
 
     /**
@@ -85,22 +104,15 @@ class User {
      * @param Tag $tag
      * @return array liste des touits d'un tag donné
      */
-    public function getTag(Tag $tag) : array {
-        $res = [];
-        return $res;
+    public function getTags(Tag $tag) : array {
+        return $tag->getTouits();
     }
 
-    /**
-     * @return array
-     */
-    public function getTouitPubliés(): array {
-        return $this->touitPubliés;
+    public function __get(string $at): mixed {
+        if (property_exists($this, $at)) {
+            return $this->$at;
+        }
+        throw new InvalidPropertyNameException("$at: propriété inconnue");
     }
-
-    /**
-     * @return int
-     */
-    public function getRole(): int {
-        return $this->role;
-    }
+    
 }
