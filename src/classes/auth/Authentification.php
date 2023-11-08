@@ -10,14 +10,6 @@ use function Symfony\Component\String\u;
 
 class Authentification
 {
-    /**
-     * Methode qui permet de se connecter au site wev
-     *
-     * @param string $email : email de l'utilisateur
-     * @param string $password : mot de passe de l'utilisateur
-     * @return void
-     * @throws AuthException : si le mot de passe est incorrect
-     */
     public static function authenticate(string $email, string $password) : void
     {
         $db = ConnectionFactory::makeConnection();
@@ -33,12 +25,6 @@ class Authentification
         }
     }
 
-    /**
-     * Methode qui permet de mettre en session l'utilisateur
-     *
-     * @param string $email : email de l'utilisateur
-     * @return void
-     */
     public static function loadProfile(string $email) : void
     {
         $db = ConnectionFactory::makeConnection();

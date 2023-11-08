@@ -3,6 +3,8 @@
 namespace iutnc\touiteur\touit;
 require_once 'vendor/autoload.php';
 
+use iutnc\touiteur\db\ConnectionFactory;
+use iutnc\touiteur\exceptions\InvalideTouitException;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
 use iutnc\touiteur\exceptions\TagDejaSuiviException;
 use iutnc\touiteur\exceptions\TouitInexistantException;
@@ -17,6 +19,7 @@ class User {
     private string $email;
     private string $mdp;
     protected int $role; //role de l'utilisateur
+    private string $id;
 
     private ListUser $abonnements; //liste des abonnements du membre
     private ListUser $abonnés; //liste des abonnés du membre
@@ -34,7 +37,8 @@ class User {
      * @param string $email
      * @param int $role
      */
-    public function __construct(string $pseudo, string $nom, string $email, int $role) {
+    public function __construct(int $id,string $pseudo, string $nom, string $email, int $role) {
+        $this->id = $id;
         $this->pseudo = $pseudo;
         $this->nom = $nom;
         $this->email = $email;
@@ -45,15 +49,52 @@ class User {
     /**
      * Methode pour permettre au membre de créer un nouveau touit
      * @return void
+     * @throws InvalideTouitException
      */
     public function publierTouit(string $t, string $fileimage ='') : Touit {
-        $touit = new Touit($t,$this->pseudo,date("d-m-Y H:i"),$fileimage);
-        foreach ($touit->listTags as $tag) {
-            $tagres= new Tag("{$tag}");
-            $tagres->listTouits->add($touit);
+        $connection = ConnectionFactory::makeConnection();
+        $date = date("d-m-Y H:i");
+        $requete = $connection->prepare("INSERT INTO touit (texte, date,note) VALUES (?,?,?,?)");
+        $requete->bindParam(1, $t);
+        $requete->bindParam(2,$date );
+        $requete->bindParam(3, $note);
+        $requete->execute();
+
+        $id = $connection->prepare("SELECT COUNT(*) FROM touit");
+        $id->execute();
+
+        /**
+         * Insert dans la table image une image
+         */
+
+        $insertionImage = $connection->prepare("INSERT INTO image (chemin) VALUES (?)");
+        $insertionImage->bindParam(1, $fileimage);
+        $insertionImage->execute();
+
+        $idImage = $connection->prepare("SELECT COUNT(*) FROM image");
+        $idImage->execute();
+
+        $lienTouit2Image = $connection->prepare("INSERT INTO touit2image (id_touit, id_image) VALUES (?,?)");
+        $lienTouit2Image->bindParam(1, $id);
+        $lienTouit2Image->bindParam(2, $idImage);
+
+        preg_match_all('/#(\w+)/', $t, $matches);
+        $tags = $matches[1];
+
+        if (empty($tags)) {
+            $tags = [''];
+        }else {
+            foreach ($tags as $tag) {
+                $tagObj = new Tag($tag);
+
+                if (!$this->tagsExiste($tagObj)) {
+                    $insertTag = $connection->prepare("INSERT INTO tags (tag) VALUES (?)");
+                    $insertTag->bindParam(1, $tag);
+                    $insertTag->execute();
+                }
+            }
         }
-        $this->listTouits->add($touit);
-        return $touit;
+        $touit = new Touit($id,$t,$this->pseudo,date("d-m-Y H:i"),$fileimage);
     }
 
     /**
@@ -61,7 +102,8 @@ class User {
      * @return void
      */
     public function supprimerTouit(Touit $touit) :void {
-        $this->listTouits->suppr($touit);
+        $connection = ConnectionFactory::makeConnection();
+        $requete = $connection->prepare("DELETE FROM touit WHERE id = ?");
     }
 
     /**
@@ -135,5 +177,5 @@ class User {
         }
         throw new InvalidPropertyNameException("$at: propriété inconnue");
     }
-    
+
 }

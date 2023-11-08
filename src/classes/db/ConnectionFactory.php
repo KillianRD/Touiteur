@@ -6,18 +6,12 @@ namespace iutnc\touiteur\db;
 use PDO;
 
 class ConnectionFactory{
-    /**
-     * @var array : tableau qui contient les informations de la base de donnée
-     */
     private static array $InfoDB = [];
-    /**
-     * @var PDO|null : variable qui contient la connexion à la base de donnée
-     */
     public static ?PDO $db = null;
 
     /**
-     * Methode qui permet de lire le fichier config.ini, afin de configurer les informations de la basse de donnée
-     * @param String $file : chemin du fichier config.ini
+     * Permet de lire le fichier config.init ce qui permet de configurer les info de la basse de donnée
+     * @param String $file
      * @return void
      */
     public static function setConfig(String $file){
