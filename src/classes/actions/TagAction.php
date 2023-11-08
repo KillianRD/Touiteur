@@ -21,8 +21,7 @@ class TagAction extends Actions
             $html = <<<END
                 <h1>Les touits avec le tag {$recherche}</h1>
                 //a faire
-                END;
-
+            END;
         }
 
         return $html;

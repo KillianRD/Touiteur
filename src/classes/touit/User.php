@@ -11,8 +11,10 @@ use iutnc\touiteur\exceptions\TouitInexistantException;
 use iutnc\touiteur\lists\ListTags;
 use iutnc\touiteur\lists\ListTouit;
 use iutnc\touiteur\lists\ListUser;
+use PDO;
 
-class User {
+class User
+{
 
     private string $pseudo;
     private string $nom;
@@ -37,7 +39,8 @@ class User {
      * @param string $email
      * @param int $role
      */
-    public function __construct(int $id,string $pseudo, string $nom, string $email, int $role) {
+    public function __construct(int $id, string $pseudo, string $nom, string $email, int $role)
+    {
         $this->id = $id;
         $this->pseudo = $pseudo;
         $this->nom = $nom;
@@ -51,17 +54,26 @@ class User {
      * @return void
      * @throws InvalideTouitException
      */
-    public function publierTouit(string $t, string $fileimage ='') : Touit {
+    public function publierTouit(string $t, string $fileimage = ''): void
+    {
         $connection = ConnectionFactory::makeConnection();
-        $date = date("d-m-Y H:i");
-        $requete = $connection->prepare("INSERT INTO touit (texte, date,note) VALUES (?,?,?,?)");
+        $date = gmdate('Y-m-d');
+        $requete = $connection->prepare("INSERT INTO touite (texte, date,note) VALUES (?,?,?)");
+        $note = 0;
         $requete->bindParam(1, $t);
-        $requete->bindParam(2,$date );
+        $requete->bindParam(2, $date);
         $requete->bindParam(3, $note);
         $requete->execute();
 
-        $id = $connection->prepare("SELECT COUNT(*) FROM touit");
+        $id = $connection->prepare("SELECT max(id) FROM touite");
         $id->execute();
+        $id = $id->fetch(PDO::FETCH_ASSOC)['max(id)'];
+
+        $lienUser2Touit = $connection->prepare("INSERT INTO user2touite (id_touite,id_user) VALUES (?, ?)");
+        $lienUser2Touit->bindParam(1, $id);
+        $lienUser2Touit->bindParam(2, $this->id);
+        $lienUser2Touit->execute();
+
 
         /**
          * Insert dans la table image une image
@@ -71,10 +83,11 @@ class User {
         $insertionImage->bindParam(1, $fileimage);
         $insertionImage->execute();
 
-        $idImage = $connection->prepare("SELECT COUNT(*) FROM image");
+        $idImage = $connection->prepare("SELECT max(id) FROM image");
         $idImage->execute();
+        $idImage = $idImage->fetch(PDO::FETCH_ASSOC)['max(id)'];
 
-        $lienTouit2Image = $connection->prepare("INSERT INTO touit2image (id_touit, id_image) VALUES (?,?)");
+        $lienTouit2Image = $connection->prepare("INSERT INTO touite2image (id_touite, id_image) VALUES (?,?)");
         $lienTouit2Image->bindParam(1, $id);
         $lienTouit2Image->bindParam(2, $idImage);
 
@@ -83,7 +96,7 @@ class User {
 
         if (empty($tags)) {
             $tags = [''];
-        }else {
+        } else {
             foreach ($tags as $tag) {
                 $tagObj = new Tag($tag);
 
@@ -94,14 +107,15 @@ class User {
                 }
             }
         }
-        $touit = new Touit($id,$t,$this->pseudo,date("d-m-Y H:i"),$fileimage);
+        //$touit = new Touit($id, $t, $this->pseudo, gmdate('Y-m-d'), 0, $fileimage);
     }
 
     /**
      * Methode pour permettre au membre de supprimer un touit
      * @return void
      */
-    public function supprimerTouit(Touit $touit) :void {
+    public function supprimerTouit(Touit $touit): void
+    {
         $connection = ConnectionFactory::makeConnection();
         $requete = $connection->prepare("DELETE FROM touit WHERE id = ?");
     }
@@ -111,7 +125,8 @@ class User {
      * @param Touit $t
      * @return void
      */
-    public function liker(Touit $t): void {
+    public function liker(Touit $t): void
+    {
         $t->__set("note", $t->__get("note") + 1);
     }
 
@@ -120,7 +135,8 @@ class User {
      * @param Touit $t
      * @return void
      */
-    public function disliker(Touit $t): void {
+    public function disliker(Touit $t): void
+    {
         $t->__set("note", $t->__get("note") - 1);
     }
 
@@ -129,7 +145,8 @@ class User {
      * @param Tag $t
      * @return void
      */
-    public function suivreTag(Tag $t) :void {
+    public function suivreTag(Tag $t): void
+    {
         $this->tagsSuivis->ajoutTag($t);
     }
 
@@ -138,7 +155,8 @@ class User {
      * @param User $user
      * @return ListTouit liste des touits d'un utilisateur donné
      */
-    public function getTouitUser(User $user): ListTouit {
+    public function getTouitUser(User $user): ListTouit
+    {
         return $user->__get("listTouits");
     }
 
@@ -148,11 +166,12 @@ class User {
      * @return bool
      * Methode pour verifier si un tag existe dans la base de données
      */
-    public function tagsExiste(Tag $tag) : bool {
+    public function tagsExiste(Tag $tag): bool
+    {
         $connextion = ConnectionFactory::makeConnection();
         $requete = $connextion->prepare("SELECT libelle FROM tag");
         $requete->execute([$tag->__get("tag")]);
-        $resultat = $requete->fetch(\PDO::FETCH_ASSOC);
+        $resultat = $requete->fetch(PDO::FETCH_ASSOC);
         if ($resultat) {
             return true;
         } else {
@@ -165,13 +184,14 @@ class User {
      * @param Tag $tag
      * @return ListTouit liste des touits d'un tag donné
      */
-    public function getTags(Tag $tag) : ListTouit {
+    public function getTags(Tag $tag): ListTouit
+    {
         return $tag->getTouits();
     }
 
 
-
-    public function __get(string $at): mixed {
+    public function __get(string $at): mixed
+    {
         if (property_exists($this, $at)) {
             return $this->$at;
         }

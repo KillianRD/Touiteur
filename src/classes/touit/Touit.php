@@ -49,7 +49,7 @@ class Touit
      * un texte, le pseudo de l'auteur du touit, la date de publication du touit et une possible image
      */
 
-    public function __construct(string $text, String $pseudo, string $date, int $note = 0 ,string $image='')
+    public function __construct(int $id, string $text, String $pseudo, string $date, int $note = 0 , string $image='')
     {
 
         if (strlen($text) > 235) {
@@ -57,6 +57,7 @@ class Touit
         }else {
             $this->texte = $text;
         }
+        $this->id = $id;
         $this->pseudo = $pseudo;
         $this->date = $date;
         $this->note = $note;

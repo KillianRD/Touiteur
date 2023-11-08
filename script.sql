@@ -8,7 +8,7 @@ CREATE TABLE `touite` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `texte` varchar(235) NOT NULL,
   `date` date,
-  `note` int(9),
+  `note` int(9) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

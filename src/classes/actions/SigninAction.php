@@ -27,7 +27,6 @@ class SigninAction extends Actions
             try {
                 Authentification::authenticate($email, $password);
                 $user = unserialize($_SESSION['user']);
-                var_dump($_SESSION['user']);
                 $html = <<<END
                     <h1>Bienvenue {$user->pseudo}</h1>
                     <a href='?action=logout'>Se déconnecter</a>
