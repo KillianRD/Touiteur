@@ -1,13 +1,13 @@
 <?php
 
 
-use iutn\touiter\db\ConnectionFactory;
-use iutnc\deefy\dispatch\Dispatcher;
+use iutnc\touiteur\db\ConnectionFactory;
+use iutnc\touiteur\dispatch\Dispatcher;
 
 require_once 'vendor/autoload.php';
 
 session_start();
-//ConnectionFactory::setConfig(__DIR__ . '/src/conf/config.ini');
+ConnectionFactory::setConfig(__DIR__ . '/src/conf/db.config.ini');
 
 $dispatch = new Dispatcher();
 $dispatch->run();

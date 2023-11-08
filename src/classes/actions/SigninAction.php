@@ -1,7 +1,7 @@
 <?php
 
 namespace iutnc\touiteur\actions;
-use iutnc\deefy\action\Actions;
+
 use iutnc\touiteur\auth\Authentification;
 use iutnc\touiteur\exceptions\AuthException;
 
@@ -15,8 +15,8 @@ class SigninAction extends Actions
             $html = <<<END
                 <form method='post' action='?action=signin'>
                 <h1>Bienvenue sur Touiteur</h1>
-                Email : <input type='text' name='email'>
-                Mot de passe : <input type='text' name='mdp'>
+                <label>Email : </label><input type='text' name='email'>
+                <label>Mot de passe : </label><input type='password' name='mdp'>
                 <button type='submit'>Se connecter</button><br><br>
                 Vous vous êtes jamais inscrit <a href='?action=add-user'>Inscrivez vous dès maintenant</a>
                 </form>
@@ -27,8 +27,9 @@ class SigninAction extends Actions
             try {
                 Authentification::authenticate($email, $password);
                 $user = unserialize($_SESSION['user']);
+                var_dump($_SESSION['user']);
                 $html = <<<END
-                    <h1>Bienvenue {$user->getPseudo()}</h1>
+                    <h1>Bienvenue {$user->pseudo}</h1>
                     <a href='?action=logout'>Se déconnecter</a>
                 END;
             } catch (AuthException $e) {

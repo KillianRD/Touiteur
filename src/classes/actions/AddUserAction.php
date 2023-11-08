@@ -2,7 +2,6 @@
 
 namespace iutnc\touiteur\actions;
 
-use iutnc\deefy\action\Actions;
 use iutnc\touiteur\auth\Inscription;
 use iutnc\touiteur\exceptions\AuthException;
 

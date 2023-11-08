@@ -2,10 +2,11 @@
 
 namespace iutnc\touiteur\auth;
 
-use iutn\touiter\db\ConnectionFactory;
+use iutnc\touiteur\db\ConnectionFactory;
 use iutnc\touiteur\exceptions\AuthException;
 use iutnc\touiteur\touit\User;
 use PDO;
+use function Symfony\Component\String\u;
 
 class Authentification
 {
@@ -33,6 +34,6 @@ class Authentification
         $infoUser = $requete->fetch(PDO::FETCH_ASSOC);
 
         $user = new User($infoUser['pseudo'], $infoUser['nom'], $infoUser['email'], $infoUser['role']);
-        $_SESSION['user'] = $user;
+        $_SESSION['user'] = serialize($user);
     }
 }
