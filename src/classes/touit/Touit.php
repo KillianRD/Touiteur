@@ -15,9 +15,9 @@ class Touit
      */
     private string $texte;
     /**
-     * @var User $user : Pseudo de l'auteur du touit
+     * @var String pseudo : Pseudo de l'auteur du touit
      */
-    private User $user;
+    private string $pseudo;
     /**
      * @var string $date : Date de publication du touit
      */
@@ -34,6 +34,10 @@ class Touit
      * @var ?string $image : Image du touit, pas obligatoire
      */
     private ?string $image;
+    /**
+     * @var int $id : Identifiant du touit
+     */
+    private int $id;
 
     /**
      * @param string $text
@@ -45,7 +49,7 @@ class Touit
      * un texte, le pseudo de l'auteur du touit, la date de publication du touit et une possible image
      */
 
-    public function __construct(string $text, User $user, string $date, string $image='')
+    public function __construct(string $text, String $pseudo, string $date, int $note = 0 ,string $image='')
     {
 
         if (strlen($text) > 235) {
@@ -53,9 +57,9 @@ class Touit
         }else {
             $this->texte = $text;
         }
-        $this->user = $user;
+        $this->pseudo = $pseudo;
         $this->date = $date;
-        $this->note = 0;
+        $this->note = $note;
         $this->nbTags = [];
         $this->image = $image;
     }
