@@ -80,20 +80,4 @@ class Touit
         }
     }
 
-    public function  afficherTouites(): array{
-        $connextion = ConnectionFactory::makeConnection();
-        $requete = $connextion->prepare("SELECT texte, date, note, description, chemin FROM touite NATURAL JOIN touite2image NATURAL JOIN image");
-        $requete->execute();
-        $touites = [];
-        foreach ($requete->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-            $texte = $row['texte'];
-            $date = $row['date'];
-            $note = $row['note'];
-            $description = $row['description'];
-            $chemin = $row['chemin'];
-            $t = new Touit($texte, $date, $note, $description, $chemin);
-            array_push($touites, $t);
-        }
-        return $touites;
-    }
 }
