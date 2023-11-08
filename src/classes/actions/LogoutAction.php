@@ -20,12 +20,10 @@ class LogoutAction extends Actions
         } else {
             //supp cookies de session
             unset($_SESSION['user']);
-
             $html = <<<END
                 <h1>Bienvenue sur Touiteur</h1>
                 <a href='?action=lignin'>Se connecter</a>
-                END;
-
+            END;
         }
 
         return $html;
