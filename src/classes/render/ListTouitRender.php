@@ -42,7 +42,7 @@ class ListTouitRender
             $texte = $row['texte'];
             $date = $row['date'];
             $note = $row['note'];
-            $pseudo = self::recherche_pseudo($id);
+            $pseudo = User::recherche_pseudo($id);
 
 
             $requeteImage->bindParam(1, $id);
@@ -58,21 +58,6 @@ class ListTouitRender
             array_push($touites, $t);
         }
         return $touites;
-    }
-
-    /**
-     * Methode pour trouver le pseudo d'un user
-     * @param int $id : id du touit
-     * @return String : pseudo du user
-     */
-    private static function recherche_pseudo(int $id): string
-    {
-        $connexion = ConnectionFactory::makeConnection();
-        $requete = $connexion->prepare("SELECT pseudo FROM user NATURAL JOIN user2touite WHERE user2touite.id_touite= ?");
-        $requete->bindParam(1, $id);
-        $requete->execute();
-
-        return $requete->fetch(PDO::FETCH_ASSOC)['pseudo'];
     }
 
     /**
@@ -96,7 +81,7 @@ class ListTouitRender
                 $date = $row['date'];
                 $note = $row['note'];
                 $chemin = $row['chemin'];
-                $pseudo = self::recherche_pseudo($row['touite.id']);
+                $pseudo = User::recherche_pseudo($row['touite.id']);
 
                 $t = new Touit($id, $texte, $pseudo, $date, $note, $chemin);
 

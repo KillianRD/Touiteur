@@ -6,8 +6,6 @@ require_once 'vendor/autoload.php';
 use iutnc\touiteur\db\ConnectionFactory;
 use iutnc\touiteur\exceptions\InvalideTouitException;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
-use iutnc\touiteur\exceptions\TagDejaSuiviException;
-use iutnc\touiteur\exceptions\TouitInexistantException;
 use iutnc\touiteur\lists\ListTags;
 use iutnc\touiteur\lists\ListTouit;
 use iutnc\touiteur\lists\ListUser;
@@ -57,8 +55,8 @@ class User
     public function publierTouit(string $t, string $fileimage = ''): void
     {
         $connection = ConnectionFactory::makeConnection();
-        $date = gmdate('Y-m-d');
         $requete = $connection->prepare("INSERT INTO touite (texte, date,note) VALUES (?,?,?)");
+        $date = gmdate('Y-m-d');
         $note = 0;
         $requete->bindParam(1, $t);
         $requete->bindParam(2, $date);
@@ -90,6 +88,7 @@ class User
         $lienTouit2Image = $connection->prepare("INSERT INTO touite2image (id_touite, id_image) VALUES (?,?)");
         $lienTouit2Image->bindParam(1, $id);
         $lienTouit2Image->bindParam(2, $idImage);
+        $lienTouit2Image->execute();
 
         preg_match_all('/#(\w+)/', $t, $matches);
         $tags = $matches[1];
@@ -101,13 +100,38 @@ class User
                 $tagObj = new Tag($tag);
 
                 if (!$this->tagsExiste($tagObj)) {
-                    $insertTag = $connection->prepare("INSERT INTO tags (tag) VALUES (?)");
+                    $insertTag = $connection->prepare("INSERT INTO tag (libelle) VALUES (?)");
                     $insertTag->bindParam(1, $tag);
                     $insertTag->execute();
                 }
             }
+            foreach ($tags as $tag){
+                $idtag = $connection->prepare("SELECT id FROM TAG where libelle = ?");
+                $idtag->bindParam(1, $tag);
+                $idtag->execute();
+                $idtag = $idtag->fetch(PDO::FETCH_ASSOC);
+                $insertTouite2Tag = $connection->prepare("INSERT INTO touite2tag (id_touite, id_tag) VALUES (?, ?)");
+                $insertTouite2Tag->bindParam(1, $id);
+                $insertTouite2Tag->bindParam(2, $idtag['id']);
+                $insertTouite2Tag->execute();
+            }
         }
         //$touit = new Touit($id, $t, $this->pseudo, gmdate('Y-m-d'), 0, $fileimage);
+    }
+
+    /**
+     * Methode pour trouver le pseudo d'un user
+     * @param int $id : id du touit
+     * @return String : pseudo du user
+     */
+    public static function recherche_pseudo(int $id): string
+    {
+        $connexion = ConnectionFactory::makeConnection();
+        $requete = $connexion->prepare("SELECT pseudo FROM user NATURAL JOIN user2touite WHERE user2touite.id_touite= ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
+
+        return $requete->fetch(PDO::FETCH_ASSOC)['pseudo'];
     }
 
     /**
@@ -169,8 +193,8 @@ class User
     public function tagsExiste(Tag $tag): bool
     {
         $connextion = ConnectionFactory::makeConnection();
-        $requete = $connextion->prepare("SELECT libelle FROM tag");
-        $requete->execute([$tag->__get("tag")]);
+        $requete = $connextion->prepare("SELECT libelle FROM tag where libelle = ?");
+        $requete->execute([$tag->nom]);
         $resultat = $requete->fetch(PDO::FETCH_ASSOC);
         if ($resultat) {
             return true;

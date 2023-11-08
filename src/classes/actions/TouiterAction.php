@@ -34,12 +34,9 @@ class TouiterAction extends Actions
                     $dest = $RepertoireUpload . $nomFichier . '.png';
                     if (move_uploaded_file($tmp, $dest)) {
                         $u = unserialize($_SESSION['user']);
-                        $touit = new Touit($touitText, $u, date("d-m-Y H:i"), $dest);
                         $u->publierTouit($touitText, $dest);
                         $_SESSION = serialize($u);
 
-                        $render = new TouitRender($touit);
-                        $html .= $render->render();
                         $html .= "<a href='?action=add-podcasttrack'>Faire un nouveau Touit</a><br>";
                     } else {
                         $html = "telechargment non valide<br>";
