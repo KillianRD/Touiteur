@@ -9,6 +9,18 @@ use PDO;
 
 class Inscription
 {
+    /**
+     * Methode qui permet de créer un compte
+     *
+     * @param string $email : email de l'utilisateur
+     * @param string $pass : mot de passe de l'utilisateur
+     * @param string $confirmPass : confirmation du mot de passe de l'utilisateur
+     * @param string $nom : nom de l'utilisateur
+     * @param string $prenom : prenom de l'utilisateur
+     * @param string $pseudo : pseudo de l'utilisateur
+     * @return void
+     * @throws AuthException : si l'inscription ne s'est pas bien passée
+     */
     public static function register(string $email, string $pass, string $confirmPass, string $nom, string $prenom, string $pseudo): void
     {
         $db = ConnectionFactory::makeConnection();
@@ -36,6 +48,13 @@ class Inscription
         }
     }
 
+    /**
+     * Methode qui permet de vérifier la force du mot de passe
+     *
+     * @param string $pass : mot de passe de l'utilisateur
+     * @param integer $min : taille minimale du mot de passe
+     * @return boolean : true si le mot de passe est assez fort, false sinon
+     */
     private static function checkPassStrength(string $pass, int $min = 8): bool
     {
         $length = (strlen($pass) >= $min);

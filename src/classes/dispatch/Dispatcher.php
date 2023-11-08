@@ -22,6 +22,8 @@ class Dispatcher
     }
 
     /**
+     * Methode pour lancer les actions
+     *
      * @throws InvalideTouitException
      */
     public function run(): void
@@ -72,6 +74,12 @@ class Dispatcher
         $this->renderPage($html);
     }
 
+    /**
+     * Methode pour afficher la page
+     *
+     * @param string $html : code html de la page
+     * @return void
+     */
     private function renderPage(string $html) : void
     {
         echo <<<END
