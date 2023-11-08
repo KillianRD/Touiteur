@@ -100,6 +100,24 @@ class User {
         return $user->__get("listTouits");
     }
 
+
+    /**
+     * @param Tag $tag
+     * @return bool
+     * Methode pour verifier si un tag existe dans la base de données
+     */
+    public function tagsExiste(Tag $tag) : bool {
+        $connextion = ConnectionFactory::makeConnection();
+        $requete = $connextion->prepare("SELECT libelle FROM tag");
+        $requete->execute([$tag->__get("tag")]);
+        $resultat = $requete->fetch(\PDO::FETCH_ASSOC);
+        if ($resultat) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Methode pour récuperer la liste des touits d'un tag donné
      * @param Tag $tag
@@ -108,6 +126,8 @@ class User {
     public function getTags(Tag $tag) : ListTouit {
         return $tag->getTouits();
     }
+
+
 
     public function __get(string $at): mixed {
         if (property_exists($this, $at)) {
