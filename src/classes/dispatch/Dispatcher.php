@@ -9,6 +9,8 @@ use iutnc\touiteur\actions\LogoutAction;
 use iutnc\touiteur\actions\ProfilAction;
 use iutnc\touiteur\actions\SigninAction;
 use iutnc\touiteur\actions\TagAction;
+use iutnc\touiteur\actions\TouiterAction;
+use iutnc\touiteur\exceptions\InvalideTouitException;
 
 class Dispatcher
 {
@@ -19,6 +21,9 @@ class Dispatcher
         $this->action = $_GET['action'] ?? null;
     }
 
+    /**
+     * @throws InvalideTouitException
+     */
     public function run(): void
     {
         switch ($this->action) {
@@ -52,6 +57,10 @@ class Dispatcher
                 break;
             case 'abonnement' :
                 $a = new AbonnementAction();
+                $html = $a->execute();
+                break;
+            case 'touiter' :
+                $a = new TouiterAction();
                 $html = $a->execute();
                 break;
             default :

@@ -8,7 +8,7 @@ CREATE TABLE `touite` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `texte` varchar(235) NOT NULL,
   `date` date,
-  `note` int(9)
+  `note` int(9),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -21,7 +21,7 @@ CREATE TABLE `tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `image`;
-CREATE TABLE `tag` (
+CREATE TABLE `image` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(235) NOT NULL,
   `chemin` varchar(500) DEFAULT NULL,
@@ -42,18 +42,18 @@ CREATE TABLE `user` (
 
 DROP TABLE IF EXISTS `user2touite`;
 CREATE TABLE `user2touite` (
-                                  `id_touite` int(11) NOT NULL,
-                                  `id_user` int(11) NOT NULL,
-                                  PRIMARY KEY (`id_touite`,`id_user`),
-                                  CONSTRAINT `user2touite_ibfk_1` FOREIGN KEY (`id_touite`) REFERENCES `touite` (`id`),
-                                  CONSTRAINT `user2touite_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`)
+    `id_touite` int(11) NOT NULL,
+    `id_user` int(11) NOT NULL,
+    PRIMARY KEY (`id_touite`,`id_user`),
+    CONSTRAINT `user2touite_ibfk_1` FOREIGN KEY (`id_touite`) REFERENCES `touite` (`id`),
+    CONSTRAINT `user2touite_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `abonnement`;
 CREATE TABLE `abonnement` (
   `id_user1` int(11) NOT NULL,
   `id_user2` int(11) NOT NULL,
-  PRIMARY KEY (`id_touite`,`id_tag`),
+  PRIMARY KEY (`id_user1`,`id_user2`),
   CONSTRAINT `abonnement_ibfk_1` FOREIGN KEY (`id_user1`) REFERENCES `user` (`id`),
   CONSTRAINT `abonnement_ibfk_2` FOREIGN KEY (`id_user2`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -62,7 +62,7 @@ DROP TABLE IF EXISTS `user2tag`;
 CREATE TABLE `user2tag` (
   `id_user` int(11) NOT NULL,
   `id_tag` int(11) NOT NULL,
-  PRIMARY KEY (`id_touite`,`id_tag`),
+  PRIMARY KEY (`id_user`,`id_tag`),
   CONSTRAINT `user2tag_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`),
   CONSTRAINT `user2tag_ibfk_2` FOREIGN KEY (`id_tag`) REFERENCES `tag` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -80,7 +80,7 @@ DROP TABLE IF EXISTS `touite2image`;
 CREATE TABLE `touite2image` (
   `id_touite` int(11) NOT NULL,
   `id_image` int(11) NOT NULL,
-  PRIMARY KEY (`id_touite`,`id_tag`),
+  PRIMARY KEY (`id_touite`,`id_image`),
   CONSTRAINT `touite2image_ibfk_1` FOREIGN KEY (`id_touite`) REFERENCES `touite` (`id`),
   CONSTRAINT `touite2image_ibfk_2` FOREIGN KEY (`id_image`) REFERENCES `image` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

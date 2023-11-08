@@ -2,9 +2,6 @@
 
 namespace iutnc\touiteur\actions;
 
-
-use iutnc\deefy\action\Actions;
-
 class LogoutAction extends Actions
 {
 

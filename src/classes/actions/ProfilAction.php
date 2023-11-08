@@ -2,7 +2,7 @@
 
 namespace iutnc\touiteur\actions;
 
-class ProfilAction
+class ProfilAction extends Actions
 {
     public function execute(): string
     {
@@ -17,8 +17,7 @@ class ProfilAction
             $html = <<<END
                 
                 
-                END;
-
+            END;
         }
 
         return $html;
