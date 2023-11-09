@@ -118,24 +118,6 @@ class User
     }
 
     /**
-     * Methode pour trouver le pseudo d'un user
-     *
-     * @param int $id : id du touit
-     * @return String : pseudo du user
-     */
-    public static function recherche_pseudo(int $id): string
-    {
-        $connexion = ConnectionFactory::makeConnection();
-        $requete = $connexion->prepare("SELECT u.pseudo FROM user u
-                                        JOIN user2touite u2t ON u.id = u2t.id_user
-                                        WHERE u2t.id_touite = ?");
-        $requete->bindParam(1, $id);
-        $requete->execute();
-
-        return $requete->fetch(PDO::FETCH_ASSOC)['pseudo'];
-    }
-
-    /**
      * Methode qui permet d'afficher les touits d'un user
      *
      * @throws InvalideTouitException
@@ -155,15 +137,7 @@ class User
 
         $list = [];
         foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $id = $row['id'];
-            $texte = $row['texte'];
-            $date = $row['date'];
-            $note = $row['note'];
-            $chemin = $row['chemin'];
-            $pseudo = $row['auteur'];
-
-            $t = new Touit($id, $texte, $pseudo, $date, $note, $chemin);
-
+            $t = new Touit($row['id'], $row['texte'], $row['auteur'], $row['date'], $row['note'], $row['chemin']);
             array_push($list, $t);
         }
         return $list;

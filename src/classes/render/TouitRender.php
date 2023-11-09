@@ -48,7 +48,8 @@ class TouitRender
 
     public function long(): string
     {
-        return "<p>@"."{$this->touit->pseudo}</p>" .
+        $id = Touit::getIdUserByIdTouit($this->touit->id);
+        return "<a href='?action=otherprofil&id={$id}'>@"."{$this->touit->pseudo}</a>" .
             "<p>{$this->touit->date}</p>" .
             "<p>{$this->touit->texte}</p>" .
             "<p>{$this->touit->note}</p>";

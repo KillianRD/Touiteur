@@ -108,4 +108,15 @@ class Touit
 
         return $t;
     }
+
+    public static function getIdUserByIdTouit(int $id): int
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT id_user
+                                FROM user2touite u2t
+                                WHERE id_touite = ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
+        return $requete->fetch(\PDO::FETCH_ASSOC)['id_user'];
+    }
 }

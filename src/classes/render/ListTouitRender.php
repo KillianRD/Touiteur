@@ -24,37 +24,25 @@ class ListTouitRender
     }
 
     /**
-     * Methode pour afficher la liste des touits
+     * Methode pour afficher la liste des touits lors que nous ne sommes pas connecté
      * @return array : liste des touits
      * @throws InvalideTouitException
      */
     public static function render_home(): array
     {
         $connexion = ConnectionFactory::makeConnection();
-        $requete = $connexion->prepare("SELECT texte, date, note, id FROM touite ORDER BY date DESC");
-        $requeteImage = $connexion->prepare("SELECT chemin FROM image NATURAL JOIN touite2image WHERE id_touite = ?");
-
+        $requete = $connexion->prepare("SELECT t.texte, t.date, t.note, t.id, u.pseudo AS auteur, i.chemin AS chemin_image
+                                        FROM touite t
+                                        LEFT JOIN touite2image ti ON t.id = ti.id_touite
+                                        LEFT JOIN image i ON ti.id_image = i.id
+                                        LEFT JOIN user2touite u2t ON t.id = u2t.id_touite
+                                        LEFT JOIN user u ON u2t.id_user = u.id
+                                        ORDER BY t.date DESC");
         $requete->execute();
 
         $touites = [];
         foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $id = $row['id'];
-            $texte = $row['texte'];
-            $date = $row['date'];
-            $note = $row['note'];
-            $pseudo = User::recherche_pseudo($row['id']);
-
-
-            $requeteImage->bindParam(1, $id);
-            $requeteImage->execute();
-
-            $chemin = $requeteImage->fetch(PDO::FETCH_ASSOC);
-
-            if ($chemin !== false) {
-                $t = new Touit($id, $texte, $pseudo, $date, 0, $chemin['chemin']);
-            } else {
-                $t = new Touit($id, $texte, $pseudo, $date, 0);
-            }
+            $t = new Touit($row['id'], $row['texte'], $row['auteur'], $row['date'], $row['note'], $row['chemin_image']);
             array_push($touites, $t);
         }
         return $touites;
@@ -65,28 +53,23 @@ class ListTouitRender
      */
     public static function render_sub(int $iduser1): array
     {
-        $list = [];
         $connexion = ConnectionFactory::makeConnection();
-        $requete = $connexion->prepare("SELECT id_user2 FROM abonnement where id_user1 = ?");
+        $requete = $connexion->prepare("SELECT t.texte, t.date, t.note, u.pseudo AS auteur, i.chemin, t.id
+                                        FROM touite t
+                                        LEFT JOIN touite2image ti ON t.id = ti.id_touite
+                                        LEFT JOIN image i ON ti.id_image = i.id
+                                        JOIN user2touite u2t ON t.id = u2t.id_touite
+                                        LEFT JOIN user u ON u2t.id_user = u.id
+                                        WHERE u2t.id_user IN (SELECT id_user2 FROM abonnement WHERE id_user1 = ?) AND u2t.id_user != ?
+                                        ORDER BY t.date");
         $requete->bindParam(1, $iduser1);
+        $requete->bindParam(2, $iduser1);
         $requete->execute();
+
+        $list = [];
         foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $requeteTouit = $connexion->prepare("SELECT texte, date, note, chemin, touite.id FROM touite NATURAL JOIN touite2image
-                                            NATURAL JOIN image NATURAL JOIN user2touite WHERE id = ?}");
-            $requeteTouit->bindParam(1, $row['id_user2']);
-            $requeteTouit->execute();
-            foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
-                $id = $row['id'];
-                $texte = $row['texte'];
-                $date = $row['date'];
-                $note = $row['note'];
-                $chemin = $row['chemin'];
-                $pseudo = User::recherche_pseudo($row['touite.id']);
-
-                $t = new Touit($id, $texte, $pseudo, $date, $note, $chemin);
-
-                array_push($list, $t);
-            }
+            $t = new Touit($row['id'], $row['texte'], $row['auteur'], $row['date'], $row['note'], $row['chemin']);
+            array_push($list, $t);
         }
         return $list;
     }

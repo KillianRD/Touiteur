@@ -7,6 +7,7 @@ use iutnc\touiteur\actions\AbonneAction;
 use iutnc\touiteur\actions\AddUserAction;
 use iutnc\touiteur\actions\HomeAction;
 use iutnc\touiteur\actions\LogoutAction;
+use iutnc\touiteur\actions\OtherProfilAction;
 use iutnc\touiteur\actions\ProfilAction;
 use iutnc\touiteur\actions\SigninAction;
 use iutnc\touiteur\actions\SuivreTagAction;
@@ -54,7 +55,11 @@ class Dispatcher
                 $a = new ProfilAction();
                 $html = $a->execute();
                 break;
-            case 'abonne' :
+            case 'otherprofil' :
+                $a = new OtherProfilAction();
+                $html = $a->execute();
+                break;
+             case 'abonne' :
                 $a = new AbonneAction();
                 $html = $a->execute();
                 break;

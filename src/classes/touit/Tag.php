@@ -52,30 +52,21 @@ class Tag
     public static function getTouitbyTag(string $libelle): array
     {
         $db = ConnectionFactory::makeConnection();
-        $requeteTouit = $db->prepare("SELECT t.*, i.chemin AS chemin_image
-                                            FROM touite t
-                                            JOIN touite2tag t2t ON t.id = t2t.id_touite
-                                            JOIN tag ta ON t2t.id_tag = ta.id
-                                            LEFT JOIN touite2image t2i ON t.id = t2i.id_touite
-                                            LEFT JOIN image i ON t2i.id_image = i.id
-                                            WHERE ta.libelle = ?");
+        $requeteTouit = $db->prepare("SELECT t.*, i.chemin AS chemin_image, u.pseudo AS auteur
+                                    FROM touite t
+                                    JOIN touite2tag t2t ON t.id = t2t.id_touite
+                                    JOIN tag ta ON t2t.id_tag = ta.id
+                                    LEFT JOIN touite2image t2i ON t.id = t2i.id_touite
+                                    LEFT JOIN image i ON t2i.id_image = i.id
+                                    LEFT JOIN user2touite u2t ON t.id = u2t.id_touite
+                                    LEFT JOIN user u ON u2t.id_user = u.id
+                                    WHERE ta.libelle = ?");
         $requeteTouit->bindParam(1, $libelle);
         $requeteTouit->execute();
 
         $list = [];
         foreach ($requeteTouit->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $id = $row['id'];
-            $texte = $row['texte'];
-            $date = $row['date'];
-            $note = $row['note'];
-            $chemin = $row['chemin_image'];
-            $pseudo = User::recherche_pseudo($id);
-
-            if ($chemin !== null) {
-                $t = new Touit($id, $texte, $pseudo, $date, $note, $chemin);
-            } else {
-                $t = new Touit($id, $texte, $pseudo, $date, $note);
-            }
+            $t = new Touit($row['id'], $row['texte'], $row['auteur'], $row['date'], $row['note'], $row['chemin_image']);
             array_push($list, $t);
         }
         return $list;
