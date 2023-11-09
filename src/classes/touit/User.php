@@ -253,6 +253,29 @@ class User
         $requete->execute();
     }
 
+
+    /**
+     * Methode pour permettre au membre de suivre un autre membre
+     */
+    public function suivreUser(int $id): void{
+        $connection = ConnectionFactory::makeConnection();
+        $requete = $connection->prepare("INSERT INTO abonnement (id_user1, id_user2) VALUES (?, ?)");
+        $requete->bindParam(1, $this->id);
+        $requete->bindParam(2, $id);
+        $requete->execute();
+    }
+
+    /**
+     * Methode pour permettre au membre de ne plus suivre un autre membre
+     */
+    public function nePlusSuivreUser(int $id): void {
+        $connection = ConnectionFactory::makeConnection();
+        $requete = $connection->prepare("DELETE FROM abonnment (id_use1, id_user2) VALUES (?, ?))");
+        $requete->bindParam(1, $this->id);
+        $requete->bindParam(2, $id);
+        $requete->execute();
+    }
+
     /**
      * Methode pour récuperer la listes des touits d'un abonnement
      * @param User $user
