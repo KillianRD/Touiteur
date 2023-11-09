@@ -5,6 +5,7 @@ namespace iutnc\touiteur\touit;
 use iutnc\touiteur\db\ConnectionFactory;
 use iutnc\touiteur\exceptions\InvalideTouitException;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
+use iutnc\touiteur\exceptions\TagInexistantException;
 use iutnc\touiteur\lists\ListTouit;
 use iutnc\touiteur\render\ListTouitRender;
 use PDO;
@@ -62,7 +63,7 @@ class Tag
         $requeteTouit->execute();
 
         $list = [];
-        foreach ($requeteTouit->fetchAll(PDO::FETCH_ASSOC) as $row){
+        foreach ($requeteTouit->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $id = $row['id'];
             $texte = $row['texte'];
             $date = $row['date'];
@@ -78,5 +79,23 @@ class Tag
             array_push($list, $t);
         }
         return $list;
+    }
+
+    public static function AbonnementTag(string $recherche, int $id): void
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT id FROM tag WHERE libelle = ?");
+        $requete->bindParam(1, $recherche);
+        $requete->execute();
+        $requete = $requete->fetch(PDO::FETCH_ASSOC);
+
+        if ($requete === false) {
+            throw new TagInexistantException("Le tag n'existe pas");
+        } else {
+            $insert = $db->prepare("INSERT INTO user2tag VALUES (?, ?)");
+            $insert->bindParam(1, $id);
+            $insert->bindParam(2, $requete['id']);
+            $insert->execute();
+        }
     }
 }
