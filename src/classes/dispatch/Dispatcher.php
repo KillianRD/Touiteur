@@ -62,7 +62,7 @@ class Dispatcher
                 $a = new OtherProfilAction();
                 $html = $a->execute();
                 break;
-             case 'abonne' :
+            case 'abonne' :
                 $a = new AbonneAction();
                 $html = $a->execute();
                 break;
@@ -74,7 +74,7 @@ class Dispatcher
                 $a = new TouiterAction();
                 $html = $a->execute();
                 break;
-            case 'SuivreTag':
+            case 'suivreTag':
                 $a = new SuivreTagAction();
                 $html = $a->execute();
                 break;
@@ -99,7 +99,8 @@ class Dispatcher
         $this->renderPage($html);
     }
 
-    private function renderPage(string $html) : void {
+    private function renderPage(string $html): void
+    {
         echo <<<END
             <!DOCTYPE html>
             <html lang='fr'>

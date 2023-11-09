@@ -13,7 +13,7 @@ class SuivreTagAction extends Actions
         $html = '';
         if ($this->http_method === "GET") {
             $html = <<< END
-                <form method='post' action='?action=SuivreTag'>
+                <form method='post' action='?action=suivreTag'>
                 <label for="recherche">S'abonner à un tag : </label>
                 <input type="text" id="recherche" name="recherche" placeholder="Recherche">
                 <input type="submit" value="Rechercher">
