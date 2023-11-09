@@ -74,11 +74,7 @@ class User
         $lienUser2Touit->bindParam(2, $this->id);
         $lienUser2Touit->execute();
 
-
-        /**
-         * Insert dans la table image une image
-         */
-
+         //Insert dans la table image une image
         $insertionImage = $connection->prepare("INSERT INTO image (chemin) VALUES (?)");
         $insertionImage->bindParam(1, $fileimage);
         $insertionImage->execute();
@@ -123,6 +119,7 @@ class User
 
     /**
      * Methode pour trouver le pseudo d'un user
+     *
      * @param int $id : id du touit
      * @return String : pseudo du user
      */
@@ -139,6 +136,8 @@ class User
     }
 
     /**
+     * Methode qui permet d'afficher les touits d'un user
+     *
      * @throws InvalideTouitException
      */
     public static function render_Profil_Touit(int $id): array
@@ -165,6 +164,12 @@ class User
         return $list;
     }
 
+    /**
+     * Methode qui peremet d'affichier les abonnés d'un user
+     *
+     * @param int $id : id du user
+     * @return array : liste des abonnés
+     */
     public static function render_Sub_Profil(int $id): array
     {
         $db = ConnectionFactory::makeConnection();
@@ -182,6 +187,13 @@ class User
         return $listSub;
     }
 
+    /**
+     * Methode qui permet de savoir si un user est abonné à un autre user
+     *
+     * @param int $idUser : id du user
+     * @param int $idSub : id du user abonné
+     * @return bool : true si abonné
+     */
     public static function CheckUserFollow(int $idUser, int $idSub): bool
     {
         $db = ConnectionFactory::makeConnection();
@@ -194,7 +206,8 @@ class User
     }
 
     /**
-     * Methode pour permettre au membre de supprimer un touit
+     * Methode pour permettre au user de supprimer un touit
+     * @param int $id : id du touit
      * @return void
      */
     public function supprimerTouit(int $id): void
@@ -232,8 +245,9 @@ class User
 
 
     /**
-     * Methode pour permettre au membre de liker un touit
-     * @param int $id
+     * Methode pour permettre au user de liker un touit
+     *
+     * @param int $id : id du touit
      * @return void
      */
     public function liker(int $id): void
@@ -245,8 +259,9 @@ class User
     }
 
     /**
-     * Methode qui permet au membre de disliker un touit
-     * @param int $id
+     * Methode qui permet au user de disliker un touit
+     *
+     * @param int $id : id du touit
      * @return void
      */
     public function disliker(int $id): void
@@ -258,8 +273,9 @@ class User
     }
 
     /**
-     * Methode pour permettre au membre de suivre un tag
-     * @param int $id
+     * Methode qui permet au user de suivre un tag
+     *
+     * @param int $id : id du tag
      * @return void
      */
     public function suivreTag(int $id): void
@@ -272,8 +288,9 @@ class User
     }
 
     /**
-     * Methode pour permettre au membre de ne plus suivre un tag
-     * @param int $id
+     * Methode qui permet au user de ne plus suivre un tag
+     *
+     * @param int $id : id du tag
      * @return void
      */
     public function nePlusSuivreTag(int $id): void
@@ -287,7 +304,10 @@ class User
 
 
     /**
-     * Methode pour permettre au membre de suivre un autre membre
+     * Methode qui permet au user de suivre un autre user
+     *
+     * @param int $id : id du user
+     * @return void
      */
     public function suivreUser(int $id): void
     {
@@ -299,7 +319,10 @@ class User
     }
 
     /**
-     * Methode pour permettre au membre de ne plus suivre un autre membre
+     * Methode qui permet au user de ne plus suivre un autre user
+     *
+     * @param int $id : id du user
+     * @return void
      */
     public function nePlusSuivreUser(int $id): void
     {
@@ -311,9 +334,10 @@ class User
     }
 
     /**
-     * Methode pour récuperer la listes des touits d'un abonnement
-     * @param User $user
-     * @return ListTouit liste des touits d'un utilisateur donné
+     * Methode qui permet de récuperer tous des touits d'un user
+     *
+     * @param User $user : user dont on veut récuperer les touits
+     * @return ListTouit liste des touits du user
      */
     public function getTouitUser(User $user): ListTouit
     {
@@ -322,9 +346,10 @@ class User
 
 
     /**
-     * @param Tag $tag
-     * @return bool
-     * Methode pour verifier si un tag existe dans la base de données
+     *  Methode qui permet de verifier si un tag existe dans la base de données
+     *
+     * @param Tag $tag : tag dont on veut vérifier l'existence
+     * @return bool : true si le tag existe
      */
     public function tagsExiste(Tag $tag): bool
     {
@@ -340,9 +365,10 @@ class User
     }
 
     /**
-     * Methode pour récuperer la liste des touits d'un tag donné
-     * @param Tag $tag
-     * @return ListTouit liste des touits d'un tag donné
+     * Methode qui permet de récuperer la liste des touits d'un tag donné
+     *
+     * @param Tag $tag : tag dont on veut récuperer les touits
+     * @return ListTouit : liste des touits du tag
      */
     public function getTags(Tag $tag): ListTouit
     {
@@ -350,6 +376,13 @@ class User
     }
 
 
+    /**
+     * Mmethode qui permet de récuperer la liste des tags suivis par un user
+     *
+     * @param string $at : nom de la propriété
+     * @return mixed : liste des tags suivis par le user
+     * @throws InvalidPropertyNameException : si la propriété n'existe pas
+     */
     public function __get(string $at): mixed
     {
         if (property_exists($this, $at)) {
