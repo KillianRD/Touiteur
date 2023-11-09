@@ -65,39 +65,43 @@ class Dispatcher
                 break;
             default :
                 $html = <<<END
-                   <h1>Bienvenu sur Touiteur</h1>
+                   <h1>Bienvenue sur Touiteur</h1>
                 END;
                 break;
         }
         $this->renderPage($html);
     }
 
-    private function renderPage(string $html) : void
-    {
+    private function renderPage(string $html) : void {
         echo <<<END
             <!DOCTYPE html>
             <html lang='fr'>
             <head>
                 <meta charset='UTF-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <link rel='shortcut icon' href='./images/play-circle.svg' type='image/x-icon'>
-                <link rel='stylesheet' type='text/css' href='./css/style.css'>
-                <title>Touiter</title>
+                <link rel='shortcut icon' href='./images/oiseau.png' type='image/x-icon'>
+                <link rel='stylesheet' type='text/css' href='./css/home.css'>
+                <title>Touiteur</title>
             </head>
-            <body>
-                <img src="./images/touiter" alt="Logo reprensentant Touiter"><a href='?action'></a></img>
-                <nav><ul>
-                    <a href='?action=home'>Accueil<img src="./images/" alt="Maison representant l'accueil"/></a><br>
-                    <a href='?action=tag'>Voir un tag<img src="./images/" alt="Hastag representant les hastags"/></a><br>
-                    <a href='?action=profil'>Profil<img src="./images/" alt="Personne representant un profil"/></a><br>
-                    <a href='?action=signin'>Se connecter<img src="./images/" alt="Personne representant un compte deja existant"/></a><br>
-                    <a href='?action=add-user'>Inscription<img src="./images/" alt="Personne representant un ajout de compte"/></a><br>         
-                    <a href='?action=touiter'>Touiter<img src="./images/" alt="Mail representant la creation d'un touite"/></a><br>         
-                    <a href='?action=logout'>Se deconnecter</a><br>
-                </ul></nav>
-                $html
+            <body> 
+                <header>
+                    <div>
+                        <a href="?action=home" class="home"><img src="./images/oiseau.png" alt="Logo Touiteur" class="logo_touiteur">Touiteur</a>
+                    </div>      
+                    <nav>
+                        <ul>
+                            <a href="?action=profil" class="profil"><img src="./images/profil.png" alt="Personne representant un profil" class="logo_profil">Profil</a>
+                            <a href="?action=tag" class="tag"><img src="./images/hash.png" alt="Hashtag representant les hashtags" class="logo_hash">Tags</a>            
+                            <a href="?action=touiter" class="touiter"><img src="./images/touiter.png" alt="message" class="logo_touiter">Touiter</a>              
+                        </ul>
+                    </nav>
+                </header>
+
+                <main class="content">
+                    $html
+                </main>      
             </body>
             </html>
-        END;
+END;
     }
 }

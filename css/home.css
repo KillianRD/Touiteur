@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Asar&family=Caprasimo&family=Varela+Round&display=swap');
+/*************************CSS de la page d'accueil*************************/
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #1b7b33;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+    border-color: #135624;
+    border-style: solid;
+}
+
+/***Logo Touiteur***/
+.home{
+    font-size: 40px;
+    margin: 20px;
+    text-decoration: none;
+    color : white;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.home:hover{
+    margin: 30px;
+}
+
+.logo_touiteur {
+    vertical-align: middle;
+    width: 60px;
+    height: 70px;
+    margin-right: 10px;
+}
+
+/***Nav barre**/
+nav {
+    display: flex;
+}
+
+nav ul {
+    margin-right: 50px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    margin: 40px;
+    font-size: 25px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow ', sans-serif;
+}
+
+nav a img {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+/***Contenu principal de Touiteur***/
+.content {
+    margin-top: 2px;
+    padding: 20px;
+}
+
+/*************************CSS du formulaire d'inscription*************************/
+.form_user {
+    width: 350px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgb(236, 245, 232);
+    border: 3px solid #135624;
+    border-radius: 5px;
+    font-family: Asar;
+}
+
+/**********Titre du formulaire**********/
+.h1_user {
+    margin: 0px;
+    margin-bottom: 20px;
+    margin-left: 43px;
+    color:#1b7b33;
+}
+
+.logo_touiteur {
+    vertical-align: middle;
+    width: 60px;
+    height: 70px;
+    margin-right: 10px;
+}
+/**********Nom et prenom**********/
+.personne {
+    display: flex;
+}
+
+.nom {
+    margin-right: 5px;
+}
+
+.prenom {
+    margin-left: 5px;
+}
+
+/**********Reste du formulaire**********/
+.container_user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container_user input {
+    margin-bottom: 10px;
+    width: 93%;
+    border: 1px solid #135624;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.container_user input:hover {
+    border: 1px solid #135624;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: border 0.1s, box-shadow 0.1s;
+}
+
+
+/**********Bouton s'inscrire**********/
+.button_user {
+    background-color: #1b7b33;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Asar;
+    font-size: 15px;
+}
+
+.button_user:hover {
+    background-color: #135624;
+}

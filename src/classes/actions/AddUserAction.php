@@ -15,16 +15,21 @@ class AddUserAction extends Actions
         $html = ' ';
         if ($this->http_method === 'GET') {
             $html = <<<END
-                <form method='post' action='?action=add-user'><br><br>
-                <label>Nom: </label><input type='text' placeholder='<Nom>' name='nom'<br>
-                <label>Prénom: </label><input type='text' placeholder='<Prenom>' name='prenom'<br>
-                <label>Pseudo: </label><input type='text' placeholder='<Pseudo>' name='pseudo'<br>
-                <label>Email: </label><input type='email' placeholder='<Email>' name='email'<br>
-                <label>Mot de passe: </label><input type='password' placeholder='<password>' name='password'<br>
-                <label>Saisir à nouveau: </label><input type='password' placeholder='<password>' name='confirm'<br>
-                <button type='submit'>s'inscrire</button><br><br>
-                </form>
-                END;
+                <form method='post' action='?action=add-user' class="form_user">
+                    <h1 class="h1_user"><img src="/images/oiseau.png" alt="Logo Touiteur" class="logo_touiteur">Inscription</h1>  
+                        <div class="container_user">
+                            <div class="personne">
+                                <input type='text' placeholder="Nom" name='nom' class ="label-input nom "</input> 
+                                <input type='text' placeholder="Prenom" name='prenom' class ="label-input prenom" </input>
+                            </div>            
+                            <input type='text' placeholder="Pseudo" name='pseudo' class ="label-input"</input>
+                            <input type='email' placeholder="Email" name='email' class ="label-input"</input>
+                            <input type='password' placeholder="Mot de passe" name='password' class ="label-input"'</input>
+                            <input type='password' placeholder="Confirmer mot de passe" name='confirm' class ="label-input"</input>
+                            <button type='submit' class="button_user">S'inscrire</button>
+                        </div> 
+                </form>    
+END;
         } else {
             $nom = filter_var($_POST['nom'], FILTER_SANITIZE_EMAIL);
             $prenom = filter_var($_POST['prenom'], FILTER_SANITIZE_EMAIL);
