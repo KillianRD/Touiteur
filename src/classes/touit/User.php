@@ -135,6 +135,33 @@ class User
     }
 
     /**
+     * @throws InvalideTouitException
+     */
+    public static function render_Profil(int $id): array
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT texte, date, note, chemin, touite.id FROM touite NATURAL JOIN touite2image
+                                            NATURAL JOIN image NATURAL JOIN user2touite where id_user = ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
+
+        $list = [];
+        foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row){
+            $id = $row['id'];
+            $texte = $row['texte'];
+            $date = $row['date'];
+            $note = $row['note'];
+            $chemin = $row['chemin'];
+            $pseudo = User::recherche_pseudo($row['id']);
+
+            $t = new Touit($id, $texte, $pseudo, $date, $note, $chemin);
+
+            array_push($list, $t);
+        }
+        return $list;
+    }
+
+    /**
      * Methode pour permettre au membre de supprimer un touit
      * @return void
      */
