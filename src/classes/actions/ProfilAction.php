@@ -18,6 +18,7 @@ class ProfilAction extends Actions
             $html = <<<END
                 <a href='?action=abonne'>Abonné</a>
                 <a href='?action=abonnement'>Abonnement</a>
+                <a href='?action=logout'>Deconnexion</a>
             END;
 
             $u = unserialize($_SESSION['user']);

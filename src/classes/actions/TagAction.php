@@ -29,8 +29,9 @@ class TagAction extends Actions
             $list = Tag::getTouitbyTag($recherche);
             foreach ($list as $touit){
                 $render = new TouitRender($touit);
-                $html .= $render->render();
+                $html .= $render->render(1);
             }
+            $_SESSION['ancienneQuery'] = "tag";
         }
         return $html;
     }
