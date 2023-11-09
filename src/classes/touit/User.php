@@ -38,7 +38,7 @@ class User
      * @param string $email
      * @param int $role
      */
-    public function __construct(int $id, string $pseudo, string $nom, string $prenom,string $email, int $role)
+    public function __construct(int $id, string $pseudo, string $nom, string $prenom, string $email, int $role)
     {
         $this->id = $id;
         $this->pseudo = $pseudo;
@@ -107,7 +107,7 @@ class User
                     $insertTag->execute();
                 }
             }
-            foreach ($tags as $tag){
+            foreach ($tags as $tag) {
                 $idtag = $connection->prepare("SELECT id FROM TAG where libelle = ?");
                 $idtag->bindParam(1, $tag);
                 $idtag->execute();
@@ -129,7 +129,9 @@ class User
     public static function recherche_pseudo(int $id): string
     {
         $connexion = ConnectionFactory::makeConnection();
-        $requete = $connexion->prepare("SELECT pseudo FROM user NATURAL JOIN user2touite WHERE user2touite.id_touite= ?");
+        $requete = $connexion->prepare("SELECT u.pseudo FROM user u
+                                        JOIN user2touite u2t ON u.id = u2t.id_user
+                                        WHERE u2t.id_touite = ?");
         $requete->bindParam(1, $id);
         $requete->execute();
 
@@ -139,7 +141,7 @@ class User
     /**
      * @throws InvalideTouitException
      */
-    public static function render_Profil(int $id): array
+    public static function render_Profil_Touit(int $id): array
     {
         $db = ConnectionFactory::makeConnection();
         $requete = $db->prepare("SELECT texte, date, note, chemin, touite.id FROM touite NATURAL JOIN touite2image
@@ -148,7 +150,7 @@ class User
         $requete->execute();
 
         $list = [];
-        foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row){
+        foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $id = $row['id'];
             $texte = $row['texte'];
             $date = $row['date'];
@@ -161,6 +163,34 @@ class User
             array_push($list, $t);
         }
         return $list;
+    }
+
+    public static function render_Sub_Profil(int $id): array
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT id, pseudo, nom, prenom, email, role FROM user u
+                                        JOIN abonnement a ON u.id = a.id_user2
+                                        WHERE a.id_user1 = ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
+
+        $listSub = [];
+        foreach ($requete->fetch(PDO::FETCH_ASSOC) as $row) {
+            $u = new User($row['id'], $row['pseudo'], $row['nom'], $row['prenom'], $row['email'], $row['role']);
+            array_push($listSub, $u);
+        }
+        return $listSub;
+    }
+
+    public static function CheckUserFollow(int $idUser, int $idSub): bool
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT id_user2 FROM abonnement WHERE id_user1 = ?");
+        $requete->bindParam(1, $idSub);
+        $requete->execute();
+
+        if ($requete->fetchAll(PDO::FETCH_ASSOC)['id_user2'] === $idUser) return true;
+        return false;
     }
 
     /**
@@ -187,7 +217,7 @@ class User
         $SuppImage->execute();
 
 
-        $SuppLienTag= $connection->prepare("DELETE FROM touite2tag WHERE id_touite = ?");
+        $SuppLienTag = $connection->prepare("DELETE FROM touite2tag WHERE id_touite = ?");
         $SuppLienTag->bindParam(1, $id);
         $SuppLienTag->execute();
 
@@ -226,6 +256,7 @@ class User
         $requete->bindParam(1, $id);
         $requete->execute();
     }
+
     /**
      * Methode pour permettre au membre de suivre un tag
      * @param int $id
@@ -245,7 +276,8 @@ class User
      * @param int $id
      * @return void
      */
-    public function nePlusSuivreTag(int $id): void{
+    public function nePlusSuivreTag(int $id): void
+    {
         $connection = ConnectionFactory::makeConnection();
         $requete = $connection->prepare("DELETE FROM user2tag WHERE id_user = ? AND id_tag = ?");
         $requete->bindParam(1, $this->id);
@@ -257,7 +289,8 @@ class User
     /**
      * Methode pour permettre au membre de suivre un autre membre
      */
-    public function suivreUser(int $id): void{
+    public function suivreUser(int $id): void
+    {
         $connection = ConnectionFactory::makeConnection();
         $requete = $connection->prepare("INSERT INTO abonnement (id_user1, id_user2) VALUES (?, ?)");
         $requete->bindParam(1, $this->id);
@@ -268,7 +301,8 @@ class User
     /**
      * Methode pour permettre au membre de ne plus suivre un autre membre
      */
-    public function nePlusSuivreUser(int $id): void {
+    public function nePlusSuivreUser(int $id): void
+    {
         $connection = ConnectionFactory::makeConnection();
         $requete = $connection->prepare("DELETE FROM abonnment (id_use1, id_user2) VALUES (?, ?))");
         $requete->bindParam(1, $this->id);
