@@ -33,7 +33,7 @@ class Authentification
         $requete->execute();
         $infoUser = $requete->fetch(PDO::FETCH_ASSOC);
 
-        $user = new User($infoUser['id'] ,$infoUser['pseudo'], $infoUser['nom'], $infoUser['email'], $infoUser['role']);
+        $user = new User($infoUser['id'] ,$infoUser['pseudo'], $infoUser['nom'], $infoUser['prenom'], $infoUser['email'], $infoUser['role']);
         $_SESSION['user'] = serialize($user);
     }
 }
