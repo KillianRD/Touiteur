@@ -143,8 +143,13 @@ class User
     public static function render_Profil_Touit(int $id): array
     {
         $db = ConnectionFactory::makeConnection();
-        $requete = $db->prepare("SELECT texte, date, note, chemin, touite.id FROM touite NATURAL JOIN touite2image
-                                            NATURAL JOIN image NATURAL JOIN user2touite where id_user = ?");
+        $requete = $db->prepare("SELECT t.texte, t.date, t.note, u.pseudo AS auteur, i.chemin, t.id
+                                FROM touite t
+                                LEFT JOIN touite2image ti ON t.id = ti.id_touite
+                                LEFT JOIN image i ON ti.id_image = i.id
+                                JOIN user2touite u2t ON t.id = u2t.id_touite
+                                LEFT JOIN user u ON u2t.id_user = u.id
+                                WHERE u2t.id_user = ?");
         $requete->bindParam(1, $id);
         $requete->execute();
 
@@ -155,7 +160,7 @@ class User
             $date = $row['date'];
             $note = $row['note'];
             $chemin = $row['chemin'];
-            $pseudo = User::recherche_pseudo($row['id']);
+            $pseudo = $row['auteur'];
 
             $t = new Touit($id, $texte, $pseudo, $date, $note, $chemin);
 

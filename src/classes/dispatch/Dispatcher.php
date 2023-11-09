@@ -11,6 +11,7 @@ use iutnc\touiteur\actions\ProfilAction;
 use iutnc\touiteur\actions\SigninAction;
 use iutnc\touiteur\actions\SuivreTagAction;
 use iutnc\touiteur\actions\TagAction;
+use iutnc\touiteur\actions\TouitDetailAction;
 use iutnc\touiteur\actions\TouiterAction;
 use iutnc\touiteur\exceptions\InvalideTouitException;
 
@@ -67,6 +68,10 @@ class Dispatcher
                 break;
             case 'SuivreTag':
                 $a = new SuivreTagAction();
+                $html = $a->execute();
+                break;
+            case 'TouitDetail' :
+                $a = new TouitDetailAction();
                 $html = $a->execute();
                 break;
             default :

@@ -24,8 +24,9 @@ class ProfilAction extends Actions
             $listTouit = User::render_Profil_Touit($u->id);
             foreach ($listTouit as $touit){
                 $render = new TouitRender($touit);
-                $html .= $render->render();
+                $html .= $render->render(1);
             }
+            $_SESSION['ancienneQuery'] = 'profil';
         } else {
             $html = "<p>Vous n'êtes pas connectez</p>";
             $html .= "<a href='?action=signin'>Merci de vous connectez</a>";

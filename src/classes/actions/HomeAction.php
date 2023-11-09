@@ -19,16 +19,16 @@ class HomeAction extends Actions
             $list = ListTouitRender::render_sub($u->id);
             foreach ($list as $touit) {
                 $render = new TouitRender($touit);
-                $html .= $render->render();
+                $html .= $render->render(1);
             }
         } else {
             $list = ListTouitRender::render_home();
             foreach ($list as $touit) {
                 $render = new TouitRender($touit);
-                $html .= $render->render();
+                $html .= $render->render(1);
             }
         }
-
+        $_SESSION['ancienneQuery'] = 'home';
         return $html;
     }
 }
