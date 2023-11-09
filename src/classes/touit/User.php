@@ -198,34 +198,57 @@ class User
         $SuppTouit->execute();
     }
 
+
     /**
-     * Methode qui permet au membre de liker un touit
-     * @param Touit $t
+     * Methode pour permettre au membre de liker un touit
+     * @param int $id
      * @return void
      */
-    public function liker(Touit $t): void
+    public function liker(int $id): void
     {
-        $t->__set("note", $t->__get("note") + 1);
+        $connection = ConnectionFactory::makeConnection();
+        $requete = $connection->prepare("UPDATE touite SET note = note + 1 WHERE id = ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
     }
 
     /**
      * Methode qui permet au membre de disliker un touit
-     * @param Touit $t
+     * @param int $id
      * @return void
      */
-    public function disliker(Touit $t): void
+    public function disliker(int $id): void
     {
-        $t->__set("note", $t->__get("note") - 1);
+        $connection = ConnectionFactory::makeConnection();
+        $requete = $connection->prepare("UPDATE touite SET note = note + 1 WHERE id = ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
+    }
+    /**
+     * Methode pour permettre au membre de suivre un tag
+     * @param int $id
+     * @return void
+     */
+    public function suivreTag(int $id): void
+    {
+        $connection = ConnectionFactory::makeConnection();
+        $requete = $connection->prepare("INSERT INTO user2tag (id_user, id_tag) VALUES (?, ?)");
+        $requete->bindParam(1, $this->id);
+        $requete->bindParam(2, $id);
+
     }
 
     /**
-     * Methode pour permettre au membre de suivre un tag
-     * @param Tag $t
+     * Methode pour permettre au membre de ne plus suivre un tag
+     * @param int $id
      * @return void
      */
-    public function suivreTag(Tag $t): void
-    {
-        $this->tagsSuivis->ajoutTag($t);
+    public function nePlusSuivreTag(int $id): void{
+        $connection = ConnectionFactory::makeConnection();
+        $requete = $connection->prepare("DELETE FROM user2tag WHERE id_user = ? AND id_tag = ?");
+        $requete->bindParam(1, $this->id);
+        $requete->bindParam(2, $id);
+        $requete->execute();
     }
 
     /**
