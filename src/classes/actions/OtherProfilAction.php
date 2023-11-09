@@ -3,7 +3,7 @@
 namespace iutnc\touiteur\actions;
 
 use iutnc\touiteur\exceptions\InvalideTouitException;
-use iutnc\touiteur\render\TouitRender;
+use iutnc\touiteur\exceptions\UserInexistantException;
 use iutnc\touiteur\touit\User;
 
 class OtherProfilAction extends Actions
@@ -14,13 +14,8 @@ class OtherProfilAction extends Actions
      */
     public function execute(): string
     {
-        $html = '';
         if (isset($_GET['id'])) {
-            $listTouit = User::render_Profil_Touit($_GET['id']);
-            foreach ($listTouit as $touit) {
-                $render = new TouitRender($touit);
-                $html .= $render->render(1);
-            }
+            $html = User::renderProfil($_GET['id']);
         } else {
             if ($this->http_method === 'GET') {
                 $html = <<< END
@@ -31,10 +26,16 @@ class OtherProfilAction extends Actions
                     </form>
                 END;
             } else {
-
+                $pseudo = filter_var($_POST['recherche'], FILTER_SANITIZE_STRING);
+                try {
+                    $id = User::getIdByPseudo($pseudo);
+                    $html = User::renderProfil($id);
+                } catch (UserInexistantException $e){
+                    $html = "<p>La personne dont vous voulez son profil n'existe pas";
+                }
             }
         }
-        $_SESSION['ancienneQuery'] = 'otherprofil';
+        $_SESSION['ancienneQuery'] = 'home';
         return $html;
     }
 }

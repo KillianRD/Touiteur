@@ -6,9 +6,12 @@ require_once 'vendor/autoload.php';
 use iutnc\touiteur\db\ConnectionFactory;
 use iutnc\touiteur\exceptions\InvalideTouitException;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
+use iutnc\touiteur\exceptions\UserInexistantException;
 use iutnc\touiteur\lists\ListTags;
 use iutnc\touiteur\lists\ListTouit;
 use iutnc\touiteur\lists\ListUser;
+use iutnc\touiteur\render\TouitRender;
+use iutnc\touiteur\render\UserRender;
 use PDO;
 
 class User
@@ -74,7 +77,7 @@ class User
         $lienUser2Touit->bindParam(2, $this->id);
         $lienUser2Touit->execute();
 
-         //Insert dans la table image une image
+        //Insert dans la table image une image
         $insertionImage = $connection->prepare("INSERT INTO image (chemin) VALUES (?)");
         $insertionImage->bindParam(1, $fileimage);
         $insertionImage->execute();
@@ -122,7 +125,7 @@ class User
      *
      * @throws InvalideTouitException
      */
-    public static function render_Profil_Touit(int $id): array
+    private static function render_Profil_Touit(int $id): array
     {
         $db = ConnectionFactory::makeConnection();
         $requete = $db->prepare("SELECT t.texte, t.date, t.note, u.pseudo AS auteur, i.chemin, t.id
@@ -166,8 +169,69 @@ class User
         return $listSub;
     }
 
+    private static function getInfo(int $id): string
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT pseudo, nom, prenom, email, role FROM user WHERE id = ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
+        $row = $requete->fetch(PDO::FETCH_ASSOC);
+
+        $render = new UserRender(new User($id, $row['pseudo'], $row['nom'], $row['prenom'], $row['email'], $row['role']));
+        return $render->render();
+    }
+
+    public static function getIdByPseudo(string $pseudo): int
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT id FROM user WHERE pseudo = ?");
+        $requete->bindParam(1, $pseudo);
+        $requete->execute();
+        $id = $requete->fetch(PDO::FETCH_ASSOC);
+        if($id !== false){
+            return $id['id'];
+        } else {
+            throw new UserInexistantException("La personne que vous cherchez n'existe pas");
+        }
+    }
+
     /**
-     * Methode qui permet de savoir si un user est abonné à un autre user
+     * @throws InvalideTouitException
+     */
+    public static function renderProfil(int $id): string
+    {
+        $html = '';
+        $u = unserialize($_SESSION['user']);
+
+        if($id == $u->id){
+
+        } else if(User::CheckUserFollow($id, $u->id)){
+            $html = "<a href='?action=desabonner&id={$id}'>Abonné</a>";
+        } else if(!User::CheckUserFollow($id, $u->id)){
+            $html = "<a href='?action=suivre&id={$id}'>S'abonner</a>";
+        }
+
+        $html .= User::getInfo($id);
+        $html .= <<<END
+            <a href='?action=abonne'>Abonné</a>
+            <a href='?action=abonnement'>Abonnement</a>
+        END;
+
+        $listTouit = User::render_Profil_Touit($id);
+        foreach ($listTouit as $touit) {
+            $render = new TouitRender($touit);
+            $html .= $render->render(1);
+        }
+
+        return $html;
+    }
+
+    /**
+     * ATTENTION PAS FINI
+     */
+
+    /**
+     * Methode qui permet de savoir si le user connecté est abonné à un autre user
      *
      * @param int $idUser : id du user
      * @param int $idSub : id du user abonné
@@ -176,11 +240,13 @@ class User
     public static function CheckUserFollow(int $idUser, int $idSub): bool
     {
         $db = ConnectionFactory::makeConnection();
-        $requete = $db->prepare("SELECT id_user2 FROM abonnement WHERE id_user1 = ?");
+        $requete = $db->prepare("SELECT id_user2 FROM abonnement WHERE id_user1 = ? and id_user2 = ?");
         $requete->bindParam(1, $idSub);
+        $requete->bindParam(2, $idUser);
         $requete->execute();
+        $id = $requete->fetch(PDO::FETCH_ASSOC);
 
-        if ($requete->fetchAll(PDO::FETCH_ASSOC)['id_user2'] === $idUser) return true;
+        if ($id !== false) return true;
         return false;
     }
 

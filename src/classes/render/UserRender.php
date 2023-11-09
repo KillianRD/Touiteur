@@ -8,12 +8,12 @@ use iutnc\touiteur\touit\User;
 class UserRender
 {
     /**
-     * @var User $touit : Touit à afficher
+     * @var User $touit : User à afficher
      */
     private User $user;
 
     /**
-     * @param Touit $t : Touit à afficher
+     * @param User $t : User à afficher
      */
     public function __construct(User $u)
     {
@@ -21,13 +21,14 @@ class UserRender
     }
 
     /**
-     * Methode pour afficher un Profil
+     * Methode pour afficher un User
      *
-     * @return string : Renvoie le touit sous forme de HTML
+     * @return string : Renvoie le User sous forme de HTML
      */
     public function render(): string
     {
-        $html = "<p>@" . "{$this->user->pseudo}</p>";
-        return $html;
+        return "<p>@" . "{$this->user->pseudo}</p>" .
+            "<p>{$this->user->nom}</p>" .
+            "<p>{$this->user->prenom}</p>";
     }
 }
