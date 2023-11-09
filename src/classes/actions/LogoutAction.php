@@ -19,7 +19,7 @@ class LogoutAction extends Actions
             unset($_SESSION['user']);
             $html = <<<END
                 <h1>Bienvenue sur Touiteur</h1>
-                <a href='?action=lignin'>Se connecter</a>
+                <a href='?action=signin'>Se connecter</a>
             END;
         }
 

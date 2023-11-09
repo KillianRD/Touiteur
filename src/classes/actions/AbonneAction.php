@@ -15,18 +15,18 @@ class AbonneAction extends Actions
     {
         $html = '';
         if (isset($_SESSION['user'])) {
-            $html = "<a href='?action=profil' >Retour</a>";
             $u = unserialize($_SESSION['user']);
             $listSub = User::render_Sub_Profil($u->id);
             foreach ($listSub as $sub){
                 $render = new UserRender($sub);
                 $html .= $render->render();
-                if(User::CheckUserFollow($u->id,$sub->user->id)){
-                    $html .= "<a href=?action=desabonner>Abonné</a>";
+                if(User::CheckUserFollow($sub->id,$u->id)){
+                    $html .= "<a href=?action=desabonner&id={$sub->id}>Abonné</a>";
                 } else {
-                    $html .= "<a href=?action=sabonner>S'abonner</a>";
+                    $html .= "<a href=?action=suivre&id={$sub->id}>S'abonner</a>";
                 }
             }
+            $html .= "<br><a href='?action=profil' >Retour</a>";
         }
         return $html;
     }

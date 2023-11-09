@@ -156,8 +156,8 @@ class User
     {
         $db = ConnectionFactory::makeConnection();
         $requete = $db->prepare("SELECT id, pseudo, nom, prenom, email, role FROM user u
-                                        JOIN abonnement a ON u.id = a.id_user2
-                                        WHERE a.id_user1 = ?");
+                                        JOIN abonnement a ON u.id = a.id_user1
+                                        WHERE a.id_user2 = ?");
         $requete->bindParam(1, $id);
         $requete->execute();
 
@@ -168,6 +168,24 @@ class User
         }
         return $listSub;
     }
+
+    public static function render_Follow_Profil(int $id): array
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT id, pseudo, nom, prenom, email, role FROM user u
+                                        JOIN abonnement a ON u.id = a.id_user2
+                                        WHERE a.id_user1= ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
+
+        $listSub = [];
+        foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $u = new User($row['id'], $row['pseudo'], $row['nom'], $row['prenom'], $row['email'], $row['role']);
+            array_push($listSub, $u);
+        }
+        return $listSub;
+    }
+
 
     private static function getInfo(int $id): string
     {
