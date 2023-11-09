@@ -5,11 +5,13 @@ namespace iutnc\touiteur\dispatch;
 
 use iutnc\touiteur\actions\AbonneAction;
 use iutnc\touiteur\actions\AddUserAction;
+use iutnc\touiteur\actions\DesabonnerAction;
 use iutnc\touiteur\actions\HomeAction;
 use iutnc\touiteur\actions\LogoutAction;
 use iutnc\touiteur\actions\OtherProfilAction;
 use iutnc\touiteur\actions\ProfilAction;
 use iutnc\touiteur\actions\SigninAction;
+use iutnc\touiteur\actions\SuivreAction;
 use iutnc\touiteur\actions\SuivreTagAction;
 use iutnc\touiteur\actions\TagAction;
 use iutnc\touiteur\actions\TouitDetailAction;
@@ -77,6 +79,14 @@ class Dispatcher
                 break;
             case 'TouitDetail' :
                 $a = new TouitDetailAction();
+                $html = $a->execute();
+                break;
+            case 'desabonner' :
+                $a = new DesabonnerAction();
+                $html = $a->execute();
+                break;
+            case 'suivre' :
+                $a = new SuivreAction();
                 $html = $a->execute();
                 break;
             default :

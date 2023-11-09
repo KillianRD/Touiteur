@@ -227,16 +227,13 @@ class User
     }
 
     /**
-     * ATTENTION PAS FINI
-     */
-
-    /**
      * Methode qui permet de savoir si le user connecté est abonné à un autre user
      *
      * @param int $idUser : id du user
      * @param int $idSub : id du user abonné
      * @return bool : true si abonné
      */
+
     public static function CheckUserFollow(int $idUser, int $idSub): bool
     {
         $db = ConnectionFactory::makeConnection();
@@ -248,6 +245,37 @@ class User
 
         if ($id !== false) return true;
         return false;
+    }
+
+    /**
+     * Methode qui permet au user de ne plus suivre un autre user
+     *
+     * @param int $id : id du user
+     * @return void
+     */
+    public static function nePlusSuivreUser(int $id1, int $id2): void
+    {
+        $connection = ConnectionFactory::makeConnection();
+        $requete = $connection->prepare("DELETE FROM abonnement WHERE id_user1 = ? and id_user2 = ?");
+        $requete->bindParam(1, $id1);
+        $requete->bindParam(2, $id2);
+        $requete->execute();
+    }
+
+
+    /**
+     * Methode qui permet au user de suivre un autre user
+     *
+     * @param int $id : id du user
+     * @return void
+     */
+    public static function suivreUser(int $id1, int $id2): void
+    {
+        $connection = ConnectionFactory::makeConnection();
+        $requete = $connection->prepare("INSERT INTO abonnement (id_user1, id_user2) VALUES (?, ?)");
+        $requete->bindParam(1, $id1);
+        $requete->bindParam(2, $id2);
+        $requete->execute();
     }
 
     /**
@@ -288,7 +316,6 @@ class User
         $SuppTouit->execute();
     }
 
-
     /**
      * Methode pour permettre au user de liker un touit
      *
@@ -317,6 +344,7 @@ class User
         $requete->execute();
     }
 
+
     /**
      * Methode qui permet au user de suivre un tag
      *
@@ -342,37 +370,6 @@ class User
     {
         $connection = ConnectionFactory::makeConnection();
         $requete = $connection->prepare("DELETE FROM user2tag WHERE id_user = ? AND id_tag = ?");
-        $requete->bindParam(1, $this->id);
-        $requete->bindParam(2, $id);
-        $requete->execute();
-    }
-
-
-    /**
-     * Methode qui permet au user de suivre un autre user
-     *
-     * @param int $id : id du user
-     * @return void
-     */
-    public function suivreUser(int $id): void
-    {
-        $connection = ConnectionFactory::makeConnection();
-        $requete = $connection->prepare("INSERT INTO abonnement (id_user1, id_user2) VALUES (?, ?)");
-        $requete->bindParam(1, $this->id);
-        $requete->bindParam(2, $id);
-        $requete->execute();
-    }
-
-    /**
-     * Methode qui permet au user de ne plus suivre un autre user
-     *
-     * @param int $id : id du user
-     * @return void
-     */
-    public function nePlusSuivreUser(int $id): void
-    {
-        $connection = ConnectionFactory::makeConnection();
-        $requete = $connection->prepare("DELETE FROM abonnment (id_use1, id_user2) VALUES (?, ?))");
         $requete->bindParam(1, $this->id);
         $requete->bindParam(2, $id);
         $requete->execute();
