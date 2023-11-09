@@ -18,7 +18,8 @@ class HomeAction extends Actions
             $u = unserialize($_SESSION['user']);
             $list = ListTouitRender::render_sub($u->id);
             foreach ($list as $touit) {
-                $html .= $touit->render();
+                $render = new TouitRender($touit);
+                $html .= $render->render();
             }
         } else {
             $list = ListTouitRender::render_home();
