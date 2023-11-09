@@ -138,10 +138,37 @@ class User
      * Methode pour permettre au membre de supprimer un touit
      * @return void
      */
-    public function supprimerTouit(Touit $touit): void
+    public function supprimerTouit(int $id): void
     {
         $connection = ConnectionFactory::makeConnection();
-        $requete = $connection->prepare("DELETE FROM touit WHERE id = ?");
+
+        //requepère l'id de l'image
+        $RecupIdImage = $connection->prepare("SELECT id_image FROM touite2image WHERE id_touite = ?");
+        $RecupIdImage->bindParam(1, $id);
+        $RecupIdImage->execute();
+
+        $SuppLienImage = $connection->prepare("DELETE FROM touite2image WHERE id_touite = ?");
+        $SuppLienImage->bindParam(1, $id);
+        $SuppLienImage->execute();
+
+        //supprime l'image
+        $idImage = $RecupIdImage->fetch(PDO::FETCH_ASSOC)['id_image'];
+        $SuppImage = $connection->prepare("DELETE FROM image WHERE id = ?");
+        $SuppImage->bindParam(1, $idImage);
+        $SuppImage->execute();
+
+
+        $SuppLienTag= $connection->prepare("DELETE FROM touite2tag WHERE id_touite = ?");
+        $SuppLienTag->bindParam(1, $id);
+        $SuppLienTag->execute();
+
+        $SuppLienUser = $connection->prepare("DELETE FROM user2touite WHERE id_touite = ?");
+        $SuppLienUser->bindParam(1, $id);
+        $SuppLienUser->execute();
+
+        $SuppTouit = $connection->prepare("DELETE FROM touit WHERE id = ?");
+        $SuppTouit->bindParam(1, $id);
+        $SuppTouit->execute();
     }
 
     /**
