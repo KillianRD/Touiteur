@@ -42,7 +42,7 @@ class ListTouitRender
             $texte = $row['texte'];
             $date = $row['date'];
             $note = $row['note'];
-            $pseudo = User::recherche_pseudo($id);
+            $pseudo = User::recherche_pseudo($row['id']);
 
 
             $requeteImage->bindParam(1, $id);
@@ -72,7 +72,7 @@ class ListTouitRender
         $requete->execute();
         foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $requeteTouit = $connexion->prepare("SELECT texte, date, note, chemin, touite.id FROM touite NATURAL JOIN touite2image
-                                            NATURAL JOIN image NATURAL JOIN user2touite NATURAL JOIN user WHERE id = ?}");
+                                            NATURAL JOIN image NATURAL JOIN user2touite WHERE id = ?}");
             $requeteTouit->bindParam(1, $row['id_user2']);
             $requeteTouit->execute();
             foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {

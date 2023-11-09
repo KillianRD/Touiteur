@@ -180,7 +180,7 @@ class User
         $requete->execute();
 
         $listSub = [];
-        foreach ($requete->fetch(PDO::FETCH_ASSOC) as $row) {
+        foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $u = new User($row['id'], $row['pseudo'], $row['nom'], $row['prenom'], $row['email'], $row['role']);
             array_push($listSub, $u);
         }
