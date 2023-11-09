@@ -16,6 +16,7 @@ class User
 
     private string $pseudo;
     private string $nom;
+    private string $prenom;
     private string $email;
     private string $mdp;
     protected int $role; //role de l'utilisateur
@@ -37,11 +38,12 @@ class User
      * @param string $email
      * @param int $role
      */
-    public function __construct(int $id, string $pseudo, string $nom, string $email, int $role)
+    public function __construct(int $id, string $pseudo, string $nom, string $prenom,string $email, int $role)
     {
         $this->id = $id;
         $this->pseudo = $pseudo;
         $this->nom = $nom;
+        $this->prenom = $prenom;
         $this->email = $email;
         $this->role = $role;
         $this->listTouits = new ListTouit();
