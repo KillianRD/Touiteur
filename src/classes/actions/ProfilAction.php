@@ -2,24 +2,34 @@
 
 namespace iutnc\touiteur\actions;
 
+use iutnc\touiteur\exceptions\InvalideTouitException;
+use iutnc\touiteur\render\TouitRender;
+use iutnc\touiteur\touit\User;
+
 class ProfilAction extends Actions
 {
+    /**
+     * @throws InvalideTouitException
+     */
     public function execute(): string
     {
         $html = '';
-        if ($this->http_method === 'GET') {
+        if (isset($_SESSION['user'])) {
             $html = <<<END
-                <a href='?action=profil&sousAction=abonne'>Abonné</a>
-                <a href='?action=profil&sousAction=abonnement'>Abonnement</a>
+                <a href='?action=abonne'>Abonné</a>
+                <a href='?action=abonnement'>Abonnement</a>
             END;
-        } elseif($this->http_method === 'POST') {
 
-            $html = <<<END
-                
-                
-            END;
+            $u = unserialize($_SESSION['user']);
+            $listTouit = User::render_Profil_Touit($u->id);
+            foreach ($listTouit as $touit){
+                $render = new TouitRender($touit);
+                $html .= $render->render();
+            }
+        } else {
+            $html = "<p>Vous n'êtes pas connectez</p>";
+            $html .= "<a href='?action=signin'>Merci de vous connectez</a>";
         }
-
         return $html;
     }
 
