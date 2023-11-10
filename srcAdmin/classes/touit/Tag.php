@@ -43,7 +43,7 @@ class Tag
         $t = "";
 
         foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $t += $row['libelle'] . " (" . $row['nb_fois'] . ") \n";
+            $t .= "<p>Nom du tag : #" . $row['libelle'] . ", nombre de touites associés : " . $row['nb_fois'] . "</p>";
         }
         return $t;
     }

@@ -62,7 +62,7 @@ class User
         $requete->execute();
         $t = '';
         foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row){
-            $t .= "<p>Pseudo : " . $row["pseudo"] . "Nombre d'abonnées : " . $row['nombre_abonnes'] . "</p>";
+            $t .= "<p>Pseudo : " . $row["pseudo"] . ", nombre d'abonnées : " . $row['nombre_abonnes'] . "</p>";
         }
         return $t;
     }

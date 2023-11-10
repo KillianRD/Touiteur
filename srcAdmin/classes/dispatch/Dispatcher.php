@@ -64,8 +64,8 @@ class Dispatcher
                     </div>      
                     <nav>
                         <ul>
-                            <a href="?action=profil" class="profil_home"><img src="./images/profil.png" alt="Personne representant un profil" class="logo_profil">Profil</a>
-                            <a href="?action=touiter" class="touiter"><img src="./images/touiter.png" alt="message" class="logo_touiter">Touiter</a>              
+                            <a href="?action=influenceurs" class="profil_home"><img src="./images/profil.png" alt="Personne representant un profil" class="logo_profil">Influenceurs</a>
+                            <a href="?action=tendance" class="touiter"><img src="./images/touiter.png" alt="message" class="logo_touiter">Tendance</a>              
                         </ul>
                     </nav>
                 </header>
