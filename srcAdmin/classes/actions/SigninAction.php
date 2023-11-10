@@ -32,12 +32,28 @@ END;
             try {
                 Authentification::authenticate($email, $password);
                 $user = unserialize($_SESSION['user']);
-                $html = <<<END
+
+                if ($user->role === 1) {
+                    // Déconnexion de l'utilisateur
+                    unset($_SESSION['user']);
+
+                    // Afficher un message d'erreur
+                    $html = <<<END
+                        <div class="auth_error">
+                            <div class="container_error">
+                                <p class="msg_error">Vous n'avez pas les autorisations nécessaires pour vous connecter !</p>
+                                <img src="./images/colere.png" alt="oiseau colère" class="colere">
+                            </div>
+                        </div>
+                        END;
+                } else {
+                    $html = <<<END
                     <div class="connect_check">
                         <h1>Bienvenue {$user->nom}</h1>
                         <a href='?action=logout'>Se déconnecter</a>
                     </div> 
                 END;
+                }
             } catch (AuthException $e) {
                 $html = <<<END
                     <div class="auth_error">

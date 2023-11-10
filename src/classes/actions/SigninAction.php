@@ -34,7 +34,7 @@ END;
                 // Vérifier si le rôle de l'utilisateur est égal à 100
                 if ($user->role === 100) {
                     // Déconnexion de l'utilisateur
-                    Authentification::logout();
+                    unset($_SESSION['user']);
 
                     // Afficher un message d'erreur
                     $html = <<<END
@@ -53,10 +53,10 @@ END;
                             <a href='?action=logout'>Se déconnecter</a>
                         </div> 
                         END;
-        }
+                }
 
-    } catch (AuthException $e) {
-    // Gestion des erreurs d'authentification
+            } catch (AuthException $e) {
+                // Gestion des erreurs d'authentification
                 $html = <<<END
                     <div class="auth_error">
                     <div class="container_error">

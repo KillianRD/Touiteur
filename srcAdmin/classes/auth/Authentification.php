@@ -4,6 +4,8 @@ namespace iutnc\touiteur\admin\auth;
 
 use iutnc\touiteur\admin\db\ConnectionFactory;
 use iutnc\touiteur\admin\exceptions\AuthException;
+use iutnc\touiteur\admin\touit\User;
+use PDO;
 
 class Authentification
 {
