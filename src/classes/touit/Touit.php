@@ -128,18 +128,28 @@ class Touit
         $requeteexitante->bindParam(1, $idUser);
         $requeteexitante->bindParam(2, $idTouit);
         $requeteexitante->execute();
+
+        $nombreLike = Touit::getCountLike($idTouit);
+        echo $nombreLike;
+
+        $requete = $db->prepare("UPDATE touite SET note = ? + 1 WHERE id = ?");
+        $requete->bindParam(1, $nombreLike);
+        $requete->bindParam(2, $idTouit);
+        $requete->execute();
+
         $requeteexitante = $requeteexitante->fetch(\PDO::FETCH_ASSOC);
-        if($requeteexitante === false){
-            $requete = $db->prepare("UPDATE touite SET note = note + 1 WHERE id = ?");
-            $requete->bindParam(1, $id);
-            $requete->execute();
+        if ($requeteexitante === false) {
             $requeteEvaluer = $db->prepare("INSERT INTO EVALUER (`id_user`, `id_touite`, `note`) VALUES (?, ?, ?)");
             $requeteEvaluer->bindParam(1, $idUser);
             $requeteEvaluer->bindParam(2, $idTouit);
             $requeteEvaluer->bindParam(3, $note);
             $requeteEvaluer->execute();
         } else {
-            throw new Exception("Vous ne pouvez pas ");
+            $requeteEvaluer = $db->prepare("UPDATE EVALUER SET NOTE = ? WHERE id_user = ? and id_touite = ?");
+            $requeteEvaluer->bindParam(1, $note);
+            $requeteEvaluer->bindParam(2, $idUser);
+            $requeteEvaluer->bindParam(3, $idTouit);
+            $requeteEvaluer->execute();
         }
     }
 
@@ -152,13 +162,44 @@ class Touit
     public static function disliker(int $idUser, int $idTouit, int $note): void
     {
         $db = ConnectionFactory::makeConnection();
-        $requete = $db->prepare("UPDATE touite SET note = note - 1 WHERE id = ?");
+        $requeteexitante = $db->prepare("SELECT id_user, id_touite FROM evaluer where id_user = ? and id_touite = ?");
+        $requeteexitante->bindParam(1, $idUser);
+        $requeteexitante->bindParam(2, $idTouit);
+        $requeteexitante->execute();
+
+        $nombreLike = Touit::getCountLike($idTouit);
+
+        $requete = $db->prepare("UPDATE touite SET note = ? - 1 WHERE id = ?");
+        $requete->bindParam(1, $nombreLike);
+        $requete->bindParam(2, $idTouit);
+        $requete->execute();
+
+        $requeteexitante = $requeteexitante->fetch(\PDO::FETCH_ASSOC);
+        if ($requeteexitante === false) {
+            $requeteEvaluer = $db->prepare("INSERT INTO EVALUER (`id_user`, `id_touite`, `note`) VALUES (?, ?, ?)");
+            $requeteEvaluer->bindParam(1, $idUser);
+            $requeteEvaluer->bindParam(2, $idTouit);
+            $requeteEvaluer->bindParam(3, $note);
+            $requeteEvaluer->execute();
+        } else {
+            $requeteEvaluer = $db->prepare("UPDATE EVALUER SET NOTE = ? WHERE id_user = ? and id_touite = ?");
+            $requeteEvaluer->bindParam(1, $note);
+            $requeteEvaluer->bindParam(2, $idUser);
+            $requeteEvaluer->bindParam(3, $idTouit);
+            $requeteEvaluer->execute();
+        }
+    }
+
+    private static function getCountLike(int $id): int
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT COUNT(id_user) as nb FROM evaluer where id_touite = ?");
         $requete->bindParam(1, $id);
         $requete->execute();
-        $requeteEvaluer = $db->prepare("INSERT INTO EVALUER (`id_user`, `id_touite`, `note`) VALUES (?, ?, ?)");
-        $requeteEvaluer->bindParam(1, $idUser);
-        $requeteEvaluer->bindParam(2, $idTouit);
-        $requeteEvaluer->bindParam(3, $note);
-        $requeteEvaluer->execute();
+        $nb = $requete->fetch(\PDO::FETCH_ASSOC)['nb'];
+        if($nb === false){
+            return 0;
+        }
+        return $nb;
     }
 }

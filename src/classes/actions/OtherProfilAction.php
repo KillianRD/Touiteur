@@ -31,10 +31,9 @@ class OtherProfilAction extends Actions
                 try {
                     $id = User::getIdByPseudo($pseudo);
                     $html = User::renderProfil($id);
-                    echo 'machin';
                     $html .= "<a href='?action={$_SESSION['ancienneQuery']}'>Retour</a>";
                 } catch (UserInexistantException $e){
-                    $html = "<p>La personne dont vous voulez son profil n'existe pas";
+                    $html = "<p>La personne dont vous voulez son profil n'existe pas</p>";
                 }
             }
         }
