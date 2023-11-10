@@ -47,7 +47,7 @@ class TouitRender
                 <p class="nom">{$this->touit->pseudo}</p>
                 <div class="contenu_touit">
                     <p class="texte">{$this->touit->texte}</p>
-                    <img src="./images/test.png" alt="note" class="logo_test"></a>
+                    <img src="./images/test.png" alt="note" class="logo_test">
                 </div>        
             <div class="pied">
                 <p class="note">Note</p>
