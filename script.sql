@@ -142,5 +142,3 @@ VALUES ( 4, 2);
 INSERT INTO `image` VALUES (1, 'tableau', './image/IMG_0420.png');
 
 INSERT INTO `touite2image` VALUES (4, 1);
-
--- 2022-10-14 12:55:42
