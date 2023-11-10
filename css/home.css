@@ -106,32 +106,12 @@ nav a img {
     color :#1b7b33
 }
 
-.profil_sabonner {
-    background-color: #1b7b33;
-    color: rgb(255, 255, 255);
-    border-radius: 5px;
-    padding : 0px 5px;
-}
-.profil_desabonner {
-    background-color: rgb(30, 98, 193);
-    color: rgb(255, 255, 255);
-    border-radius: 5px;
-    padding : 0px 5px;
-}
-
-.profil_sabonner:hover {
-    background-color: rgb(30, 98, 193);
-    border-radius: 5px;
-    padding : 0px 6px;
-}
 
 .profil_retour {
     background-color: #135624;
     color: rgb(255, 255, 255);
     border-radius: 5px;
     padding : 8px;
-    width: 20%;
-    margin-top: 15px;
     align-self: center;
     text-align: center;
     text-decoration: none;
@@ -895,4 +875,61 @@ nav a img {
     color: #333;
     align-self: center;
 }
+
+
+/***************Affichage abonné***********/
+.list_profil_abonne {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 500px;
+    height: 100%;
+    padding: 20px;
+    font-family: Asar;
+    border : 2px solid #135624;
+    background-color: rgb(236, 245, 232);
+}
+
+.profil-inlist-abonne {
+    padding: 10px;
+    margin-bottom: 3px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+}
+.profil-inlist-abonne a {
+    text-decoration: none;
+    color : rgb(206, 210, 208);
+    font-size : 20px;
+    margin-right: 15px;
+}
+
+
+.profil_desabonner {
+    background-color: rgb(30, 98, 193);
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding : 8px;
+    text-decoration : none;
+    margin-right: 10px;
+}
+
+.profil_desabonner:hover {
+    background-color: rgb(16, 75, 157);
+}
+.profil_sabonner {
+    background-color: rgb(30, 98, 193);
+    color: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding : 8px;
+    text-decoration : none;
+    margin-right: 10px;
+}
+.profil_sabonner:hover {
+    background-color: rgb(16, 75, 157);
+}
+
 
