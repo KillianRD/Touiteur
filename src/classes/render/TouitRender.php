@@ -60,7 +60,8 @@ END;
     public function long(): string
     {
         $id = Touit::getIdUserByIdTouit($this->touit->id);
-        return <<<END
+        if($this->touit->image){
+            return <<<END
             <div class="touit">
                   <div class="tete">
                     <div class="user">
@@ -80,5 +81,26 @@ END;
                       <a href='?action=disliker&id={$this->touit->id}'>-</a>
                   </div>
             END;
+        } else {
+            return <<<END
+            <div class="touit">
+                  <div class="tete">
+                    <div class="user">
+                      <p class="nom">Mario</p>
+                      <a href='?action=otherprofil&id={$id}'>@{$this->touit->pseudo}</a>
+                    </div>
+                    <p class="date">{$this->touit->date}</p>
+                  </div>
+                  <div class="contenu">
+                    <p class="texte">{$this->touit->texte}</p>
+                  </div>
+                  <div class="pied">        
+                      <a href='?action=liker&id={$this->touit->id}'>+</a>
+                      <p class="note">{$this->touit->note}</p>
+                      <img src="./images/note.png" alt="note" class="logo_note"></a>
+                      <a href='?action=disliker&id={$this->touit->id}'>-</a>
+                  </div>
+            END;
+        }
     }
 }
