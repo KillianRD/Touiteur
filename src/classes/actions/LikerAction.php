@@ -3,7 +3,7 @@
 namespace iutnc\touiteur\actions;
 
 use iutnc\touiteur\touit\Touit;
-use iutnc\touiteur\user\User;
+use iutnc\touiteur\touit\User;
 
 class LikerAction extends Actions
 

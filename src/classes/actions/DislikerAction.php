@@ -3,6 +3,7 @@
 namespace iutnc\touiteur\actions;
 
 use iutnc\touiteur\touit\Touit;
+use iutnc\touiteur\touit\User;
 
 class DislikerAction extends Actions
 {
