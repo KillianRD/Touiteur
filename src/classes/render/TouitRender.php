@@ -42,7 +42,8 @@ class TouitRender
 
     public function short(): string
     {
-        return "<p>{$this->touit->texte}</p>" .
+        return "<a href='?action=supprimerTouit&id={$this->touit->id}'>Supprimer Touit</a>" .
+            "<p>{$this->touit->texte}</p>" .
             "<a href='?action=TouitDetail&id={$this->touit->id}'>+</a>";
     }
 

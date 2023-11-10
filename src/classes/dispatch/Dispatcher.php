@@ -16,6 +16,7 @@ use iutnc\touiteur\actions\ProfilAction;
 use iutnc\touiteur\actions\SigninAction;
 use iutnc\touiteur\actions\SuivreAction;
 use iutnc\touiteur\actions\SuivreTagAction;
+use iutnc\touiteur\actions\SupprimerTouitAction;
 use iutnc\touiteur\actions\TagAction;
 use iutnc\touiteur\actions\TouitDetailAction;
 use iutnc\touiteur\actions\TouiterAction;
@@ -98,6 +99,10 @@ class Dispatcher
                 break;
             case 'disliker':
                 $a = new DislikerAction();
+                $html = $a->execute();
+                break;
+            case 'supprimerTouit':
+                $a = new SupprimerTouitAction();
                 $html = $a->execute();
                 break;
             default :

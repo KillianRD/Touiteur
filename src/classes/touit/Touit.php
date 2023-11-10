@@ -6,6 +6,7 @@ use iutnc\touiteur\db\ConnectionFactory;
 use iutnc\touiteur\exceptions\InvalideTouitException;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
 use mysql_xdevapi\Exception;
+use PDO;
 
 require_once 'vendor/autoload.php';
 
@@ -167,7 +168,7 @@ class Touit
         $requeteexitante->bindParam(2, $idTouit);
         $requeteexitante->execute();
 
-        $nombreLike = Touit::getCountLike($idUser,$idTouit);
+        $nombreLike = Touit::getCountLike($idUser, $idTouit);
 
         $requete = $db->prepare("UPDATE touite SET note = ? - 1 WHERE id = ?");
         $requete->bindParam(1, $nombreLike);
@@ -198,9 +199,52 @@ class Touit
         $requete->bindParam(2, $idUser);
         $requete->execute();
         $nb = $requete->fetch(\PDO::FETCH_ASSOC)['nb'];
-        if($nb === false){
+        if ($nb === false) {
             return 0;
         }
         return $nb;
+    }
+
+    public static function supprimerTouit(int $id): void
+    {
+        $connection = ConnectionFactory::makeConnection();
+
+        //requepère l'id de l'image
+        $RecupIdImage = $connection->prepare("SELECT id_image FROM touite2image WHERE id_touite = ?");
+        $RecupIdImage->bindParam(1, $id);
+        $RecupIdImage->execute();
+
+        $SuppLienImage = $connection->prepare("DELETE FROM touite2image WHERE id_touite = ?");
+        $SuppLienImage->bindParam(1, $id);
+        $SuppLienImage->execute();
+
+        //supprime l'image
+        $idImage = $RecupIdImage->fetch(PDO::FETCH_ASSOC);
+        $SuppImage = $connection->prepare("DELETE FROM image WHERE id = ?");
+        $SuppImage->bindParam(1, $idImage['id_image']);
+        $SuppImage->execute();
+
+
+        $SuppLienTag = $connection->prepare("DELETE FROM touite2tag WHERE id_touite = ?");
+        $SuppLienTag->bindParam(1, $id);
+        $SuppLienTag->execute();
+
+        $SuppLienUser = $connection->prepare("DELETE FROM user2touite WHERE id_touite = ?");
+        $SuppLienUser->bindParam(1, $id);
+        $SuppLienUser->execute();
+
+        $requete = $connection->prepare("SELECT id_user FROM evaluer WHERE id_touite = ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
+
+        $requeteDeleteNote = $connection->prepare("DELETE FROM evaluer WHERE id_user = ?");
+        foreach ($requete->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+            $requeteDeleteNote->bindParam(1, $row['id_user']);
+            $requeteDeleteNote->execute();
+        }
+
+        $SuppTouit = $connection->prepare("DELETE FROM touite WHERE id = ?");
+        $SuppTouit->bindParam(1, $id);
+        $SuppTouit->execute();
     }
 }
