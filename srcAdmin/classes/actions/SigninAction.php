@@ -1,9 +1,11 @@
 <?php
 
-namespace iutnc\touiteur\actions;
+namespace iutnc\touiteur\admin\actions;
 
-use iutnc\touiteur\auth\Authentification;
-use iutnc\touiteur\exceptions\AuthException;
+
+
+use iutnc\touiteur\admin\auth\Authentification;
+use iutnc\touiteur\admin\exceptions\AuthException;
 
 class SigninAction extends Actions
 {
@@ -17,7 +19,7 @@ class SigninAction extends Actions
                     <h1 class="h1_signin"><img src="./images/oiseau.png" alt="Logo Touiteur" class="oiseau">Bienvenue sur Touiteur</h1>
                         <div class="container_signin">
                         <input type='text' placeholder="Email" name='email'>
-                        <input type='password' placeholder="Mot de passe" name='mdp'>
+                        <input type='text' placeholder="Mot de passe" name='mdp'>
                         <button type='submit' class="button_signin">Se connecter</button>
                         <p class="separation">______________________________________________</p>
                         <a href='?action=add-user' class="inscription">Créer un compte</a>
@@ -38,15 +40,13 @@ END;
                 END;
             } catch (AuthException $e) {
                 $html = <<<END
-<div class="auth_error">
-                    <div class="container_error">
-                        <p class="msg_error">Erreur lors de la connexion à votre compte !</p>
-                        <img src="./images/colere.png" alt="oiseau colère" class="colere">
-                        <p>Vous n'avez pas encore de compte ? </p>
-                        <a href='?action=add-user'>S'inscrire</a>
+                    <div class="auth_error">
+                        <div class="container_error">
+                            <p class="msg_error">Erreur lors de la connexion à votre compte !</p>
+                            <img src="./images/colere.png" alt="oiseau colère" class="colere">
+                        </div>
                     </div>
-                </div>
-END;
+                END;
             }
         }
         return $html;
