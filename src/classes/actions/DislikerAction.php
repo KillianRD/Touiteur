@@ -14,7 +14,7 @@ class DislikerAction extends Actions
             $u = unserialize($_SESSION['user']);
 
             if ($u instanceof User) {
-                Touit::liker($u->id, $_GET['id'], 1);
+                Touit::Disliker($u->id, $_GET['id'], 1);
                 return "<p class='msg_liker'>Merci d'avoir donné votre avis</p>" .
                     "<a class='back_nouser' href='?action={$_SESSION['ancienneQuery']}'>Retour</a>";
             } else {

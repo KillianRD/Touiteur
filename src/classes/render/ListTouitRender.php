@@ -49,6 +49,7 @@ class ListTouitRender
     }
 
     /**
+     * Methode pour afficher la liste des touits de nos abonnements
      * @throws InvalideTouitException
      */
     public static function render_sub(int $iduser1): array
@@ -60,10 +61,12 @@ class ListTouitRender
                                         LEFT JOIN image i ON ti.id_image = i.id
                                         JOIN user2touite u2t ON t.id = u2t.id_touite
                                         LEFT JOIN user u ON u2t.id_user = u.id
-                                        WHERE u2t.id_user IN (SELECT id_user2 FROM abonnement WHERE id_user1 = ?) AND u2t.id_user != ?
+                                        JOIN touite2tag t2t ON t.id = t2t.id_touite
+                                         WHERE u2t.id_user IN (SELECT id_user2 FROM abonnement WHERE id_user1 = ?)  OR u2t.id_user IN (SELECT id_user FROM user2tag WHERE id_tag IN (SELECT id_tag FROM user2tag WHERE id_user = ?)) AND u2t.id_user != ? 
                                         ORDER BY t.date");
         $requete->bindParam(1, $iduser1);
         $requete->bindParam(2, $iduser1);
+        $requete->bindParam(3, $iduser1);
         $requete->execute();
 
         $list = [];
@@ -73,6 +76,5 @@ class ListTouitRender
         }
         return $list;
     }
-
 
 }

@@ -131,7 +131,6 @@ class Touit
         $requeteexitante->execute();
 
         $nombreLike = Touit::getCountLike($idUser, $idTouit);
-        echo $nombreLike;
 
         $requete = $db->prepare("UPDATE touite SET note = ? + 1 WHERE id = ?");
         $requete->bindParam(1, $nombreLike);
