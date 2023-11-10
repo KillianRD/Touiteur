@@ -59,11 +59,12 @@ class User
      */
     public function publierTouit(string $t, string $fileimage = ''): void
     {
+        $filtreTouite = filter_var($t, FILTER_SANITIZE_SPECIAL_CHARS);
         $connection = ConnectionFactory::makeConnection();
-        $requete = $connection->prepare("INSERT INTO touite (texte, date,note) VALUES (?,?,?)");
+        $requete = $connection->prepare("INSERT INTO  touite(texte, date,note) VALUES (?,?,?)");
         $date = gmdate('Y-m-d');
         $note = 0;
-        $requete->bindParam(1, $t);
+        $requete->bindParam(1, $filtreTouite);
         $requete->bindParam(2, $date);
         $requete->bindParam(3, $note);
         $requete->execute();
@@ -98,7 +99,8 @@ class User
             $tags = [''];
         } else {
             foreach ($tags as $tag) {
-                $tagObj = new Tag($tag);
+                $filtreTag= filter_var($tag, FILTER_SANITIZE_SPECIAL_CHARS);
+                $tagObj = new Tag($filtreTag);
 
                 if (!$this->tagsExiste($tagObj)) {
                     $insertTag = $connection->prepare("INSERT INTO tag (libelle) VALUES (?)");
@@ -107,8 +109,9 @@ class User
                 }
             }
             foreach ($tags as $tag) {
+                $filtreTag= filter_var($tag, FILTER_SANITIZE_SPECIAL_CHARS);
                 $idtag = $connection->prepare("SELECT id FROM TAG where libelle = ?");
-                $idtag->bindParam(1, $tag);
+                $idtag->bindParam(1, $filtreTag);
                 $idtag->execute();
                 $idtag = $idtag->fetch(PDO::FETCH_ASSOC);
                 $insertTouite2Tag = $connection->prepare("INSERT INTO touite2tag (id_touite, id_tag) VALUES (?, ?)");

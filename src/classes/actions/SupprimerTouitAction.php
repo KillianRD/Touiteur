@@ -24,7 +24,7 @@ class SupprimerTouitAction extends Actions
         } else {
             Touit::supprimerTouit($_GET['id']);
             $html = "Suppression a bien été effectué";
-            $html .= "<a href='?action=profil'>Retour sur le Profil";
+            $html .= "<a href='?action=profil'>Retour sur le Profil</a>";
         }
         return $html;
     }

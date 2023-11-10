@@ -42,9 +42,16 @@ class TouitRender
 
     public function short(): string
     {
-        return "<a href='?action=supprimerTouit&id={$this->touit->id}'>Supprimer Touit</a>" .
-            "<p>{$this->touit->texte}</p>" .
-            "<a href='?action=TouitDetail&id={$this->touit->id}'>+</a>";
+        if(isset($_SESSION['user'])){
+            $u = unserialize($_SESSION['user']);
+            if($this->touit->pseudo === $u->pseudo){
+                return "<a href='?action=supprimerTouit&id={$this->touit->id}'>Supprimer Touit</a>" .
+                    "<p>{$this->touit->texte}</p>" .
+                    "<a href='?action=TouitDetail&id={$this->touit->id}'>+</a>";
+            }
+        }
+        return "<p>{$this->touit->texte}</p>" .
+                "<a href='?action=TouitDetail&id={$this->touit->id}'>+</a>";
     }
 
     public function long(): string

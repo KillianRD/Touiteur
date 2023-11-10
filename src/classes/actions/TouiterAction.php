@@ -24,7 +24,7 @@ class TouiterAction extends Actions
                 </form>
             END;
         } else {
-            $touitText = filter_var($_POST['touit'], FILTER_SANITIZE_STRING);
+            $touitText = $_POST['touit'];
             if($_FILES['image']['error'] === UPLOAD_ERR_OK){
                 $RepertoireUpload = "./image/";
                 $nomFichier = uniqid();
@@ -49,7 +49,6 @@ class TouiterAction extends Actions
                 $u->publierTouit($touitText);
                 $_SESSION = serialize($u);
             }
-
         }
         return $html;
     }
