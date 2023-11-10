@@ -27,6 +27,12 @@ class UserRender
      */
     public function render(): string
     {
-        return "<a href='?action=otherprofil&id={$this->user->id}'> @" . "{$this->user->pseudo}</a>";
+        return <<<END
+                       <a href='?action=otherprofil&id={$this->user->id}'>@{$this->user->pseudo}</a>
+                       <div class="info_profil">
+                          <p>{$this->user->prenom}</p>
+                          <p>{$this->user->nom}</p>
+                       </div>\n
+END;
     }
 }

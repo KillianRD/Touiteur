@@ -133,7 +133,7 @@ class Dispatcher
                     </div>      
                     <nav>
                         <ul>
-                            <a href="?action=profil" class="profil"><img src="./images/profil.png" alt="Personne representant un profil" class="logo_profil">Profil</a>
+                            <a href="?action=profil" class="profil_home"><img src="./images/profil.png" alt="Personne representant un profil" class="logo_profil">Profil</a>
                             <a href="?action=tag" class="tag"><img src="./images/hash.png" alt="Hashtag representant les hashtags" class="logo_hash">Explorer</a>            
                             <a href="?action=touiter" class="touiter"><img src="./images/touiter.png" alt="message" class="logo_touiter">Touiter</a>              
                         </ul>

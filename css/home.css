@@ -808,3 +808,91 @@ nav a img {
     align-self: center;
     justify-content: center;
 }
+
+/****************Affichage profil user**********/
+.profil {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: rgb(236, 245, 232);
+    border: 3px solid #135624;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    font-family: Asar;
+}
+
+.header_profile {
+    padding: 20px;
+    padding-bottom: 0px;
+    border-bottom: 1px solid #135624;
+    display: flex;
+    flex-direction: column;
+}
+
+.header_profile a {
+    font-size: 25px;
+    font-weight: bold;
+    color: #1b7b33;
+    margin-top: 0;
+    align-self: center;
+    text-decoration: none;
+}
+
+.info_profil {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.info_profil p {
+    margin: 5px 0 0;
+    margin-right:8px;
+    font-size: 22px;
+    padding :0;
+}
+
+.social {
+    display: flex;
+    justify-content: center;
+}
+
+.social a {
+    text-decoration: none;
+    color: #555;
+    margin-right: 20px;
+    text-size : 5px;
+}
+.text_abonne {
+
+}
+
+.form_logout {
+    margin-left: auto;
+    display : flex ;
+    justify-content: center;
+}
+
+.button_logout {
+    background-color: #1b7b33;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Asar;
+    font-size: 15px;
+    margin-top: 14px;
+}
+
+.button_logout:hover {
+    background-color: #135624;
+}
+
+.list_touits {
+    padding: 20px;
+    font-size: 16px;
+    color: #333;
+    align-self: center;
+}
+

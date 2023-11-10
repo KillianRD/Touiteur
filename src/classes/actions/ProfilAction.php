@@ -15,7 +15,12 @@ class ProfilAction extends Actions
         if (isset($_SESSION['user'])) {
             $u = unserialize($_SESSION['user']);
             $html = User::renderProfil($u->id);
-            $html .= "<a href='?action=logout'>Deconnexion</a>";
+            $html .= <<<END
+\n<form method='post' action='?action=logout' class="form_logout">
+    <button type='submit' class="button_logout">Déconnexion</button><br><br>
+</form>
+END;
+
         } else {
             $html = <<<END
         <form method='post' action='?action=signin' class="form_signin"> 

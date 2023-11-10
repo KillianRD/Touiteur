@@ -237,22 +237,36 @@ class User
         } else if(!User::CheckUserFollow($id, $u->id)){
             $html = "<a href='?action=suivre&id={$id}'>S'abonner</a>";
         }
-
+        $nbAbonnementRender = 0;
+        $nbAbonneRender = 0;
         $nbAbonne = $u->render_Sub_Profil($id);
+        foreach ($nbAbonne as $sub) {
+                $nbAbonneRender += 1;
+        }
         $nbAbonnement = $u->render_Follow_Profil($id);
+        foreach ($nbAbonnement as $sub) {
+            $nbAbonnementRender += 1;
+        }
 
+        $html.= "<div class='profil'>";
+        $html .= "<div class='header_profile'>\n";
         $html .= User::getInfo($id);
+        $html .= "                       <div class='social'>\n";
         $html .= <<<END
-            <a href='?action=abonne'>{$nbAbonne} Abonnés</a>
-            <a href='?action=abonnement'>{$nbAbonnement} Abonnement</a>
+                                  <a href='?action=abonne'>{$nbAbonneRender} abonnés</a>
+                                  <a href='?action=abonnement'>{$nbAbonnementRender} abonnements</a>
+                              </div>\n
         END;
+        $html .= "                   </div>\n";
 
+        $html .= "                   <div class='list_touits'>\n";
         $listTouit = User::render_Profil_Touit($id);
         foreach ($listTouit as $touit) {
             $render = new TouitRender($touit);
             $html .= $render->render(1);
         }
-
+        $html .= "</div>\n";
+        $html .= "</div>";
         return $html;
     }
 

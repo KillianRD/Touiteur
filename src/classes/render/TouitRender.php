@@ -54,7 +54,7 @@ class TouitRender
                 <img src="./images/note.png" alt="note" class="logo_note">       
             </div>
             <a href='?action=TouitDetail&id={$this->touit->id}' class="detail">+</a> 
-        </div>
+        </div>\n
 END;
     }
 
