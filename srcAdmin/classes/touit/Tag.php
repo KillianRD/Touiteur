@@ -2,7 +2,8 @@
 
 namespace iutnc\touiteur\admin\touit;
 
-use iutnc\touiteur\exceptions\InvalidPropertyNameException;
+use iutnc\touiteur\admin\db\ConnectionFactory;
+use iutnc\touiteur\admin\exceptions\InvalidPropertyNameException;
 use PDO;
 
 class Tag
@@ -27,5 +28,23 @@ class Tag
         throw new InvalidPropertyNameException("$at: propriété inconnue");
     }
 
+    /**
+     * Méthode qui permet de récupérer la liste des tags avec le nombre de fois qu'ils sont utilisés
+     *
+     * @return string : liste des tags
+     */
+    public static function ListTag(): string
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT tag.libelle, COUNT(touite2tag.id_tag) AS nb_fois
+                                        FROM tag JOIN touite2tag ON tag.id = touite2tag.id_tag
+                                        GROUP BY tag.libelle ORDER BY nb_fois ASC");
+        $requete->execute();
+        $t = "";
 
+        foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $t += $row['libelle'] . " (" . $row['nb_fois'] . ") \n";
+        }
+        return $t;
+    }
 }

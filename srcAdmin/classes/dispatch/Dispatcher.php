@@ -32,16 +32,13 @@ class Dispatcher
                 $a = new InfluenceurAction();
                 $html = $a->execute();
                 break;
-            case 'signin' :
-                $a = new SigninAction();
-                $html = $a->execute();
-                break;
             case 'logout' :
                 $a = new LogoutAction();
                 $html = $a->execute();
                 break;
             default :
-                $html = '';
+                $a = new SigninAction();
+                $html = $a->execute();
                 break;
 
         }
@@ -68,7 +65,6 @@ class Dispatcher
                     <nav>
                         <ul>
                             <a href="?action=profil" class="profil"><img src="./images/profil.png" alt="Personne representant un profil" class="logo_profil">Profil</a>
-                            <a href="?action=tag" class="tag"><img src="./images/hash.png" alt="Hashtag representant les hashtags" class="logo_hash">Explorer</a>            
                             <a href="?action=touiter" class="touiter"><img src="./images/touiter.png" alt="message" class="logo_touiter">Touiter</a>              
                         </ul>
                     </nav>
