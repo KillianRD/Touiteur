@@ -172,6 +172,12 @@ class User
         return $listSub;
     }
 
+    /**
+     * Methode qui permet d'afficher les abonnements d'un user
+     *
+     * @param int $id
+     * @return array
+     */
     public static function render_Follow_Profil(int $id): array
     {
         $db = ConnectionFactory::makeConnection();
@@ -232,10 +238,13 @@ class User
             $html = "<a href='?action=suivre&id={$id}'>S'abonner</a>";
         }
 
+        $nbAbonne = $u->render_Sub_Profil($id);
+        $nbAbonnement = $u->render_Follow_Profil($id);
+
         $html .= User::getInfo($id);
         $html .= <<<END
-            <a href='?action=abonne'>Abonné</a>
-            <a href='?action=abonnement'>Abonnement</a>
+            <a href='?action=abonne'>{$nbAbonne} Abonnés</a>
+            <a href='?action=abonnement'>{$nbAbonnement} Abonnement</a>
         END;
 
         $listTouit = User::render_Profil_Touit($id);
@@ -329,17 +338,6 @@ class User
         $requete->execute();
     }
 
-    /**
-     * Methode qui permet de récuperer tous des touits d'un user
-     *
-     * @param User $user : user dont on veut récuperer les touits
-     * @return ListTouit liste des touits du user
-     */
-    public function getTouitUser(User $user): ListTouit
-    {
-        return $user->__get("listTouits");
-    }
-
 
     /**
      *  Methode qui permet de verifier si un tag existe dans la base de données
@@ -358,17 +356,6 @@ class User
         } else {
             return false;
         }
-    }
-
-    /**
-     * Methode qui permet de récuperer la liste des touits d'un tag donné
-     *
-     * @param Tag $tag : tag dont on veut récuperer les touits
-     * @return ListTouit : liste des touits du tag
-     */
-    public function getTags(Tag $tag): ListTouit
-    {
-        return $tag->getTouits();
     }
 
 
