@@ -52,6 +52,8 @@ class TouitRender
         return "<a href='?action=otherprofil&id={$id}'>@"."{$this->touit->pseudo}</a>" .
             "<p>{$this->touit->date}</p>" .
             "<p>{$this->touit->texte}</p>" .
-            "<p>{$this->touit->note}</p>";
+            "<p>{$this->touit->note}</p>" .
+            "<a href='?action=liker&id={$this->touit->id}'>+</a>" .
+            "<a href='?action=disliker&id={$this->touit->id}'>-</a>";
     }
 }

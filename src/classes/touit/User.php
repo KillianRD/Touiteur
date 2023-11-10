@@ -335,35 +335,6 @@ class User
     }
 
     /**
-     * Methode pour permettre au user de liker un touit
-     *
-     * @param int $id : id du touit
-     * @return void
-     */
-    public function liker(int $id): void
-    {
-        $connection = ConnectionFactory::makeConnection();
-        $requete = $connection->prepare("UPDATE touite SET note = note + 1 WHERE id = ?");
-        $requete->bindParam(1, $id);
-        $requete->execute();
-    }
-
-    /**
-     * Methode qui permet au user de disliker un touit
-     *
-     * @param int $id : id du touit
-     * @return void
-     */
-    public function disliker(int $id): void
-    {
-        $connection = ConnectionFactory::makeConnection();
-        $requete = $connection->prepare("UPDATE touite SET note = note + 1 WHERE id = ?");
-        $requete->bindParam(1, $id);
-        $requete->execute();
-    }
-
-
-    /**
      * Methode qui permet au user de suivre un tag
      *
      * @param int $id : id du tag

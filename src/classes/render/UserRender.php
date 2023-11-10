@@ -27,6 +27,6 @@ class UserRender
      */
     public function render(): string
     {
-        return "<a href='otherprofil&id={$this->user->id}'> @" . "{$this->user->pseudo}</a>";
+        return "<a href='?action=otherprofil&id={$this->user->id}'> @" . "{$this->user->pseudo}</a>";
     }
 }

@@ -7,7 +7,9 @@ use iutnc\touiteur\actions\AbonneAction;
 use iutnc\touiteur\actions\AbonnementAction;
 use iutnc\touiteur\actions\AddUserAction;
 use iutnc\touiteur\actions\DesabonnerAction;
+use iutnc\touiteur\actions\DislikerAction;
 use iutnc\touiteur\actions\HomeAction;
+use iutnc\touiteur\actions\LikerAction;
 use iutnc\touiteur\actions\LogoutAction;
 use iutnc\touiteur\actions\OtherProfilAction;
 use iutnc\touiteur\actions\ProfilAction;
@@ -90,10 +92,18 @@ class Dispatcher
                 $a = new SuivreAction();
                 $html = $a->execute();
                 break;
+            case 'liker' :
+                $a = new LikerAction();
+                $html = $a->execute();
+                break;
+            case 'disliker':
+                $a = new DislikerAction();
+                $html = $a->execute();
+                break;
             default :
-                $html = <<<END
-                   <h1>Bienvenue sur Touiteur</h1>
-                END;
+                $a = new HomeAction();
+                $html = $a->execute();
+                break;
                 break;
         }
         $this->renderPage($html);

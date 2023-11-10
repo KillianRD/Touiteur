@@ -21,13 +21,14 @@ class AbonneAction extends Actions
                 $render = new UserRender($sub);
                 $html .= $render->render();
                 if(User::CheckUserFollow($sub->id,$u->id)){
-                    $html .= "<a href=?action=desabonner&id={$sub->id}>Abonné</a>";
+                    $html .= "<a href='?action=desabonner&id={$sub->id}'>Abonné</a>";
                 } else {
-                    $html .= "<a href=?action=suivre&id={$sub->id}>S'abonner</a>";
+                    $html .= "<a href='?action=suivre&id={$sub->id}'>S'abonner</a>";
                 }
             }
             $html .= "<br><a href='?action=profil' >Retour</a>";
         }
+        $_SESSION['ancienneQuery'] = 'abonne';
         return $html;
     }
 }

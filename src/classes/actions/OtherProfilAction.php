@@ -16,6 +16,7 @@ class OtherProfilAction extends Actions
     {
         if (isset($_GET['id'])) {
             $html = User::renderProfil($_GET['id']);
+            $html .= "<a href='?action={$_SESSION['ancienneQuery']}'>Retour</a>";
         } else {
             if ($this->http_method === 'GET') {
                 $html = <<< END
@@ -30,6 +31,8 @@ class OtherProfilAction extends Actions
                 try {
                     $id = User::getIdByPseudo($pseudo);
                     $html = User::renderProfil($id);
+                    echo 'machin';
+                    $html .= "<a href='?action={$_SESSION['ancienneQuery']}'>Retour</a>";
                 } catch (UserInexistantException $e){
                     $html = "<p>La personne dont vous voulez son profil n'existe pas";
                 }

@@ -85,5 +85,14 @@ CREATE TABLE `touite2image` (
   CONSTRAINT `touite2image_ibfk_2` FOREIGN KEY (`id_image`) REFERENCES `image` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `evaluer`;
+CREATE TABLE `evaluer` (
+    `id_user` int(11) NOT NULL,
+    `id_touite` int(11) NOT NULL,
+    `note` int(2) NOT NULL,
+    PRIMARY KEY (`id_user`,`id_touite`),
+    CONSTRAINT `evaluer_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`),
+    CONSTRAINT `evaluer_ibfk_2` FOREIGN KEY (`id_touite`) REFERENCES `touite` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 2022-10-14 12:55:42

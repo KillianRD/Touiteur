@@ -37,7 +37,7 @@ class TouiterAction extends Actions
                         $u->publierTouit($touitText, $dest);
                         $_SESSION = serialize($u);
 
-                        $html .= "<a href='?action=add-podcasttrack'>Faire un nouveau Touit</a><br>";
+                        $html .= "<a href='?action=touiter'>Faire un nouveau Touit</a><br>";
                     } else {
                         $html = "telechargment non valide<br>";
                     }

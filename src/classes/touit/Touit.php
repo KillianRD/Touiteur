@@ -5,6 +5,7 @@ namespace iutnc\touiteur\touit;
 use iutnc\touiteur\db\ConnectionFactory;
 use iutnc\touiteur\exceptions\InvalideTouitException;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
+use mysql_xdevapi\Exception;
 
 require_once 'vendor/autoload.php';
 
@@ -118,5 +119,46 @@ class Touit
         $requete->bindParam(1, $id);
         $requete->execute();
         return $requete->fetch(\PDO::FETCH_ASSOC)['id_user'];
+    }
+
+    public static function liker(int $idUser, int $idTouit, int $note): void
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requeteexitante = $db->prepare("SELECT id_user, id_touite FROM evaluer where id_user = ? and id_touite = ?");
+        $requeteexitante->bindParam(1, $idUser);
+        $requeteexitante->bindParam(2, $idTouit);
+        $requeteexitante->execute();
+        $requeteexitante = $requeteexitante->fetch(\PDO::FETCH_ASSOC);
+        if($requeteexitante === false){
+            $requete = $db->prepare("UPDATE touite SET note = note + 1 WHERE id = ?");
+            $requete->bindParam(1, $id);
+            $requete->execute();
+            $requeteEvaluer = $db->prepare("INSERT INTO EVALUER (`id_user`, `id_touite`, `note`) VALUES (?, ?, ?)");
+            $requeteEvaluer->bindParam(1, $idUser);
+            $requeteEvaluer->bindParam(2, $idTouit);
+            $requeteEvaluer->bindParam(3, $note);
+            $requeteEvaluer->execute();
+        } else {
+            throw new Exception("Vous ne pouvez pas ");
+        }
+    }
+
+    /**
+     * Methode qui permet au user de disliker un touit
+     *
+     * @param int $id : id du touit
+     * @return void
+     */
+    public static function disliker(int $idUser, int $idTouit, int $note): void
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("UPDATE touite SET note = note - 1 WHERE id = ?");
+        $requete->bindParam(1, $id);
+        $requete->execute();
+        $requeteEvaluer = $db->prepare("INSERT INTO EVALUER (`id_user`, `id_touite`, `note`) VALUES (?, ?, ?)");
+        $requeteEvaluer->bindParam(1, $idUser);
+        $requeteEvaluer->bindParam(2, $idTouit);
+        $requeteEvaluer->bindParam(3, $note);
+        $requeteEvaluer->execute();
     }
 }
