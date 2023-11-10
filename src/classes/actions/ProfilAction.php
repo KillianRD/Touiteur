@@ -16,11 +16,11 @@ class ProfilAction extends Actions
             $u = unserialize($_SESSION['user']);
             $html = User::renderProfil($u->id);
             $html .= "<a href='?action=logout'>Deconnexion</a>";
-            $_SESSION['ancienneQuery'] = 'profil';
         } else {
             $html = "<p>Vous n'êtes pas connectez</p>";
             $html .= "<a href='?action=signin'>Merci de vous connectez</a>";
         }
+        $_SESSION['ancienneQuery'] = 'profil';
         return $html;
     }
 

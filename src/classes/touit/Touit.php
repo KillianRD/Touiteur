@@ -129,7 +129,7 @@ class Touit
         $requeteexitante->bindParam(2, $idTouit);
         $requeteexitante->execute();
 
-        $nombreLike = Touit::getCountLike($idTouit);
+        $nombreLike = Touit::getCountLike($idUser, $idTouit);
         echo $nombreLike;
 
         $requete = $db->prepare("UPDATE touite SET note = ? + 1 WHERE id = ?");
@@ -167,7 +167,7 @@ class Touit
         $requeteexitante->bindParam(2, $idTouit);
         $requeteexitante->execute();
 
-        $nombreLike = Touit::getCountLike($idTouit);
+        $nombreLike = Touit::getCountLike($idUser,$idTouit);
 
         $requete = $db->prepare("UPDATE touite SET note = ? - 1 WHERE id = ?");
         $requete->bindParam(1, $nombreLike);
@@ -190,11 +190,12 @@ class Touit
         }
     }
 
-    private static function getCountLike(int $id): int
+    private static function getCountLike(int $idUser, int $idTouit): int
     {
         $db = ConnectionFactory::makeConnection();
-        $requete = $db->prepare("SELECT COUNT(id_user) as nb FROM evaluer where id_touite = ?");
-        $requete->bindParam(1, $id);
+        $requete = $db->prepare("SELECT COUNT(id_user) as nb FROM evaluer where id_touite = ? and id_user != ?");
+        $requete->bindParam(1, $idTouit);
+        $requete->bindParam(2, $idUser);
         $requete->execute();
         $nb = $requete->fetch(\PDO::FETCH_ASSOC)['nb'];
         if($nb === false){
