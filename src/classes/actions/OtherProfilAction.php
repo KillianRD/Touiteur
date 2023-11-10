@@ -15,8 +15,8 @@ class OtherProfilAction extends Actions
     public function execute(): string
     {
         if (isset($_GET['id'])) {
-            $html = User::renderProfil($_GET['id']);
-            $html .= "<a href='?action={$_SESSION['ancienneQuery']}'>Retour</a>";
+            $html = "<a href='?action={$_SESSION['ancienneQuery']}'>Retour</a>";
+            $html .= User::renderProfil($_GET['id']);
         } else {
             if ($this->http_method === 'GET') {
                 $html = <<< END

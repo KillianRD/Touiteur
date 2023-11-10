@@ -22,7 +22,7 @@ class LogoutAction extends Actions
                     <h1 class="h1_signin"><img src="./images/oiseau.png" alt="Logo Touiteur" class="oiseau">Bienvenue sur Touiteur</h1>
                     <div class="container_signin">
                         <input type='text' placeholder="Email" name='email'>
-                        <input type='text' placeholder="Mot de passe" name='mdp'>
+                        <input type='password' placeholder="Mot de passe" name='mdp'>
                         <button type='submit' class="button_signin">Se connecter</button>
                         <p class="separation">______________________________________________</p>
                         <a href='?action=add-user' class="inscription">Créer un compte</a>

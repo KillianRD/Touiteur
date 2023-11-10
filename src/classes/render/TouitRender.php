@@ -47,7 +47,6 @@ class TouitRender
                 <p class="nom">{$this->touit->pseudo}</p>
                 <div class="contenu_touit">
                     <p class="texte">{$this->touit->texte}</p>
-                    <img src="./images/test.png" alt="note" class="logo_test">
                 </div>        
             <div class="pied">
                 <p class="note">Note</p>
@@ -62,24 +61,24 @@ END;
     {
         $id = Touit::getIdUserByIdTouit($this->touit->id);
         return <<<END
-<div class="touit">
-      <div class="tete">
-        <div class="user">
-          <p class="nom">Mario</p>
-          <a href='?action=otherprofil&id={$id}'>@{$this->touit->pseudo}</a>
-        </div>
-        <p class="date">{$this->touit->date}</p>
-      </div>
-      <div class="contenu">
-        <p class="texte">{$this->touit->texte}</p>
-        <img src="./images/test.png" alt="note" class="logo_test"></a>
-      </div>
-      <div class="pied">        
-          <a href='?action=liker&id={$this->touit->id}'>+</a>
-          <p class="note">{$this->touit->note}</p>
-          <img src="./images/note.png" alt="note" class="logo_note"></a>
-          <a href='?action=disliker&id={$this->touit->id}'>-</a>
-      </div>
-END;
+            <div class="touit">
+                  <div class="tete">
+                    <div class="user">
+                      <p class="nom">Mario</p>
+                      <a href='?action=otherprofil&id={$id}'>@{$this->touit->pseudo}</a>
+                    </div>
+                    <p class="date">{$this->touit->date}</p>
+                  </div>
+                  <div class="contenu">
+                    <p class="texte">{$this->touit->texte}</p>
+                    <img src="{$this->touit->image}" alt="note" class="logo_test"></a>
+                  </div>
+                  <div class="pied">        
+                      <a href='?action=liker&id={$this->touit->id}'>+</a>
+                      <p class="note">{$this->touit->note}</p>
+                      <img src="./images/note.png" alt="note" class="logo_note"></a>
+                      <a href='?action=disliker&id={$this->touit->id}'>-</a>
+                  </div>
+            END;
     }
 }

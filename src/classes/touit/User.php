@@ -57,11 +57,11 @@ class User
      * @return void
      * @throws InvalideTouitException
      */
-    public function publierTouit(string $t, string $fileimage = ''): void
+    public function publierTouit(string $t, ?string $fileimage): void
     {
         $filtreTouite = filter_var($t, FILTER_SANITIZE_SPECIAL_CHARS);
         $connection = ConnectionFactory::makeConnection();
-        $requete = $connection->prepare("INSERT INTO  touite(texte, date,note) VALUES (?,?,?)");
+        $requete = $connection->prepare("INSERT INTO  touite(texte, date, note) VALUES (?,?,?)");
         $date = gmdate('Y-m-d');
         $note = 0;
         $requete->bindParam(1, $filtreTouite);
@@ -79,18 +79,20 @@ class User
         $lienUser2Touit->execute();
 
         //Insert dans la table image une image
-        $insertionImage = $connection->prepare("INSERT INTO image (chemin) VALUES (?)");
-        $insertionImage->bindParam(1, $fileimage);
-        $insertionImage->execute();
+        if($fileimage !== null){
+            $insertionImage = $connection->prepare("INSERT INTO image (chemin) VALUES (?)");
+            $insertionImage->bindParam(1, $fileimage);
+            $insertionImage->execute();
 
-        $idImage = $connection->prepare("SELECT max(id) FROM image");
-        $idImage->execute();
-        $idImage = $idImage->fetch(PDO::FETCH_ASSOC)['max(id)'];
+            $idImage = $connection->prepare("SELECT max(id) FROM image");
+            $idImage->execute();
+            $idImage = $idImage->fetch(PDO::FETCH_ASSOC)['max(id)'];
 
-        $lienTouit2Image = $connection->prepare("INSERT INTO touite2image (id_touite, id_image) VALUES (?,?)");
-        $lienTouit2Image->bindParam(1, $id);
-        $lienTouit2Image->bindParam(2, $idImage);
-        $lienTouit2Image->execute();
+            $lienTouit2Image = $connection->prepare("INSERT INTO touite2image (id_touite, id_image) VALUES (?,?)");
+            $lienTouit2Image->bindParam(1, $id);
+            $lienTouit2Image->bindParam(2, $idImage);
+            $lienTouit2Image->execute();
+        }
 
         preg_match_all('/#(\w+)/', $t, $matches);
         $tags = $matches[1];
@@ -99,7 +101,7 @@ class User
             $tags = [''];
         } else {
             foreach ($tags as $tag) {
-                $filtreTag= filter_var($tag, FILTER_SANITIZE_SPECIAL_CHARS);
+                $filtreTag = filter_var($tag, FILTER_SANITIZE_SPECIAL_CHARS);
                 $tagObj = new Tag($filtreTag);
 
                 if (!$this->tagsExiste($tagObj)) {
@@ -109,7 +111,7 @@ class User
                 }
             }
             foreach ($tags as $tag) {
-                $filtreTag= filter_var($tag, FILTER_SANITIZE_SPECIAL_CHARS);
+                $filtreTag = filter_var($tag, FILTER_SANITIZE_SPECIAL_CHARS);
                 $idtag = $connection->prepare("SELECT id FROM TAG where libelle = ?");
                 $idtag->bindParam(1, $filtreTag);
                 $idtag->execute();
@@ -215,7 +217,7 @@ class User
         $requete->bindParam(1, $pseudo);
         $requete->execute();
         $id = $requete->fetch(PDO::FETCH_ASSOC);
-        if($id !== false){
+        if ($id !== false) {
             return $id['id'];
         } else {
             throw new UserInexistantException("La personne que vous cherchez n'existe pas");
@@ -230,31 +232,31 @@ class User
         $html = '';
         $u = unserialize($_SESSION['user']);
 
-        if($id == $u->id){
+        if ($id == $u->id) {
 
-        } else if(User::CheckUserFollow($id, $u->id)){
+        } else if (User::CheckUserFollow($id, $u->id)) {
             $html = "<a href='?action=desabonner&id={$id}'>Abonné</a>";
-        } else if(!User::CheckUserFollow($id, $u->id)){
+        } else if (!User::CheckUserFollow($id, $u->id)) {
             $html = "<a href='?action=suivre&id={$id}'>S'abonner</a>";
         }
         $nbAbonnementRender = 0;
         $nbAbonneRender = 0;
         $nbAbonne = $u->render_Sub_Profil($id);
         foreach ($nbAbonne as $sub) {
-                $nbAbonneRender += 1;
+            $nbAbonneRender += 1;
         }
         $nbAbonnement = $u->render_Follow_Profil($id);
         foreach ($nbAbonnement as $sub) {
             $nbAbonnementRender += 1;
         }
 
-        $html.= "<div class='profil'>";
+        $html .= "<div class='profil'>";
         $html .= "<div class='header_profile'>\n";
         $html .= User::getInfo($id);
         $html .= "                       <div class='social'>\n";
         $html .= <<<END
-                                  <a href='?action=abonne'>{$nbAbonneRender} abonnés</a>
-                                  <a href='?action=abonnement'>{$nbAbonnementRender} abonnements</a>
+                                  <a href='?action=abonne&id={$id}'>{$nbAbonneRender} abonnés</a>
+                                  <a href='?action=abonnement&id={$id}'>{$nbAbonnementRender} abonnements</a>
                               </div>\n
         END;
         $html .= "                   </div>\n";

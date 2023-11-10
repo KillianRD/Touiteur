@@ -10,19 +10,18 @@ class AbonnementAction
     public function execute(): string
     {
         $html = '';
-        if (isset($_SESSION['user'])) {
-            $u = unserialize($_SESSION['user']);
-            $listSub = User::render_Follow_Profil($u->id);
+        if (isset($_GET['id']) && isset($_SESSION['user'])) {
+            $listSub = User::render_Follow_Profil($_GET['id']);
             $html .= "<div class='list_profil_abonne'>\n";
-            foreach ($listSub as $sub){
+            foreach ($listSub as $sub) {
                 $html .= "                       <div class='profil-inlist-abonne'>\n";
                 $render = new UserRender($sub);
                 $html .= $render->render();
                 $html .= "                       </div>\n";
-                if(User::CheckUserFollow($sub->id,$u->id)){
-                    $html .= "                     <a href='?action=desabonner&id={$sub->id}' class='profil_desabonner'>Abonné</a>\n";
+                if (User::CheckUserFollow($sub->id, $_GET['id'])) {
+                    $html .= "                     <a href='?action=desabonner&id={$sub->id}' class='profil_desabonner'>Abonné</a><br>";
                 } else {
-                    $html .= "                     <a href='?action=suivre&id={$sub->id}' class='profil_sabonner'>S'abonner</a>\n";
+                    $html .= "                     <a href='?action=suivre&id={$sub->id}' class='profil_sabonner'>S'abonner</a><br>";
                 }
 
             }
@@ -30,7 +29,7 @@ class AbonnementAction
             $html .= "                     <a href='?action=profil' class='profil_retour' >Retour</a>\n";
             $html .= "                    </div>";
         }
-        $_SESSION['ancienneQuery'] = 'abonne';
+        $_SESSION['ancienneQuery'] = 'profil';
         return $html;
     }
 }
