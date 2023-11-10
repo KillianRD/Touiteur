@@ -95,4 +95,52 @@ CREATE TABLE `evaluer` (
     CONSTRAINT `evaluer_ibfk_2` FOREIGN KEY (`id_touite`) REFERENCES `touite` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Insert Celena.dev
+INSERT INTO `user` (`email`, `pseudo`, `nom`, `prenom`, `passwd`, `role`)
+VALUES ('devoitine@mail.com', 'Celena.dev', 'Devoitine', 'Celena', 'Cdevoitine1&', 100);
+
+-- Insert Victor.geo
+INSERT INTO `user` (`email`, `pseudo`, `nom`, `prenom`, `passwd`)
+VALUES ('georges@mail.com', 'Victor.geo', 'Georges', 'Victor', 'Vdeorges1&');
+
+-- Insert Killian.rich_duti
+INSERT INTO `user` (`email`, `pseudo`, `nom`, `prenom`, `passwd`)
+VALUES ('richardin.dutilleul@mail.com', 'Killian.rich_duti', 'Richardin–Dutilleul', 'Killian', 'Krichardindutilleul1&');
+
+-- Insert Massi.chek
+INSERT INTO `user` (`email`, `pseudo`, `nom`, `prenom`, `passwd`)
+VALUES ('cheklat@mail.com', 'Massi.chek', 'Cheklat', 'Ahmed-Massi', 'AMcheklat1&');
+
+-- Insert Touite 1
+INSERT INTO `touite` (`texte`, `date`, `note`)
+VALUES ('Je suis fatigée.', '2022-10-14', 0);
+
+-- Insert Touite 2
+INSERT INTO `touite` (`texte`, `date`, `note`)
+VALUES ('Rêveil toi et travail.', '2022-10-14', 0);
+
+-- Insert Touite 3
+INSERT INTO `touite` (`texte`, `date`, `note`)
+VALUES ('Oh le professeur est la.', '2022-10-14', 0);
+
+-- Insert Touite 4
+INSERT INTO `touite` (`texte`, `date`, `note`)
+VALUES ('Il y a un beau schema au tableau.', '2022-08-14', 0);
+
+INSERT INTO `user2touite` (`id_touite`, `id_user`)
+VALUES ( 1, 4);
+
+INSERT INTO `user2touite` (`id_touite`, `id_user`)
+VALUES ( 2, 3);
+
+INSERT INTO `user2touite` (`id_touite`, `id_user`)
+VALUES ( 3, 2);
+
+INSERT INTO `user2touite` (`id_touite`, `id_user`)
+VALUES ( 4, 2);
+
+INSERT INTO `image` VALUES (1, 'tableau', './image/IMG_0420.png');
+
+INSERT INTO `touite2image` VALUES (4, 1);
+
 -- 2022-10-14 12:55:42

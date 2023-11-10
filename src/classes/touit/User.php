@@ -323,37 +323,6 @@ class User
     }
 
     /**
-     * Methode qui permet au user de suivre un tag
-     *
-     * @param int $id : id du tag
-     * @return void
-     */
-    public function suivreTag(int $id): void
-    {
-        $connection = ConnectionFactory::makeConnection();
-        $requete = $connection->prepare("INSERT INTO user2tag (id_user, id_tag) VALUES (?, ?)");
-        $requete->bindParam(1, $this->id);
-        $requete->bindParam(2, $id);
-
-    }
-
-    /**
-     * Methode qui permet au user de ne plus suivre un tag
-     *
-     * @param int $id : id du tag
-     * @return void
-     */
-    public function nePlusSuivreTag(int $id): void
-    {
-        $connection = ConnectionFactory::makeConnection();
-        $requete = $connection->prepare("DELETE FROM user2tag WHERE id_user = ? AND id_tag = ?");
-        $requete->bindParam(1, $this->id);
-        $requete->bindParam(2, $id);
-        $requete->execute();
-    }
-
-
-    /**
      *  Methode qui permet de verifier si un tag existe dans la base de données
      *
      * @param Tag $tag : tag dont on veut vérifier l'existence

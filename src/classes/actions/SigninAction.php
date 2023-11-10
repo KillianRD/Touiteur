@@ -30,15 +30,35 @@ END;
             try {
                 Authentification::authenticate($email, $password);
                 $user = unserialize($_SESSION['user']);
-                $html = <<<END
-                    <div class="connect_check">
-                        <h1>Bienvenue {$user->nom}</h1>
-                        <a href='?action=logout'>Se déconnecter</a>
-                    </div> 
-                END;
+
+                // Vérifier si le rôle de l'utilisateur est égal à 100
+                if ($user->role === 100) {
+                    // Déconnexion de l'utilisateur
+                    unset($_SESSION['user']);
+
+                    // Afficher un message d'erreur
+                    $html = <<<END
+                        <div class="auth_error">
+                            <div class="container_error">
+                                <p class="msg_error">Vous n'avez pas les autorisations nécessaires pour vous connecter !</p>
+                                <img src="./images/colere.png" alt="oiseau colère" class="colere">
+                            </div>
+                        </div>
+                        END;
+                } else {
+                    // Utilisateur connecté avec succès
+                    $html = <<<END
+                        <div class="connect_check">
+                            <h1>Bienvenue {$user->nom}</h1>
+                            <a href='?action=logout'>Se déconnecter</a>
+                        </div> 
+                        END;
+                }
+
             } catch (AuthException $e) {
+                // Gestion des erreurs d'authentification
                 $html = <<<END
-<div class="auth_error">
+                    <div class="auth_error">
                     <div class="container_error">
                         <p class="msg_error">Erreur lors de la connexion à votre compte !</p>
                         <img src="./images/colere.png" alt="oiseau colère" class="colere">
@@ -46,7 +66,7 @@ END;
                         <a href='?action=add-user'>S'inscrire</a>
                     </div>
                 </div>
-END;
+                END;
             }
         }
         return $html;
