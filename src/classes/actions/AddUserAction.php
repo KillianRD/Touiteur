@@ -16,19 +16,19 @@ class AddUserAction extends Actions
         if ($this->http_method === 'GET') {
             $html = <<<END
                 <form method='post' action='?action=add-user' class="form_user">
-                    <h1 class="h1_user"><img src="/images/oiseau.png" alt="Logo Touiteur" class="logo_touiteur">Inscription</h1>  
-                        <div class="container_user">
-                            <div class="personne">
-                                <input type='text' placeholder="Nom" name='nom' class ="label-input nom "</input> 
-                                <input type='text' placeholder="Prenom" name='prenom' class ="label-input prenom" </input>
-                            </div>            
-                            <input type='text' placeholder="Pseudo" name='pseudo' class ="label-input"</input>
-                            <input type='email' placeholder="Email" name='email' class ="label-input"</input>
-                            <input type='password' placeholder="Mot de passe" name='password' class ="label-input"'</input>
-                            <input type='password' placeholder="Confirmer mot de passe" name='confirm' class ="label-input"</input>
-                            <button type='submit' class="button_user">S'inscrire</button>
-                        </div> 
-                </form>    
+        <h1 class="h1_user"><img src="./images/oiseau.png" alt="Logo Touiteur" class="logo_touiteur">Inscription</h1>  
+        <div class="container_user">
+            <div class="personne">
+                <input type='text' placeholder="Nom" name='nom' class ="nom_label "</input> 
+                <input type='text' placeholder="Prenom" name='prenom' class ="prenom_label" </input>
+            </div>            
+            <input type='text' placeholder="Pseudo" name='pseudo' class ="label-input"</input>
+            <input type='email' placeholder="Email" name='email' class ="label-input"</input>
+            <input type='password' placeholder="Mot de passe" name='password' class ="label-input"'</input>
+            <input type='password' placeholder="Confirmer mot de passe" name='confirm' class ="label-input"</input>
+            <button type='submit' class="button_user">S'inscrire</button>
+        </div> 
+    </form>    
 END;
         } else {
             $nom = filter_var($_POST['nom'], FILTER_SANITIZE_EMAIL);
@@ -41,15 +41,24 @@ END;
             try {
                 Inscription::register($email, $password, $confirm, $nom, $prenom, $pseudo);
                 $html = <<<END
-                Votre compte a bien été créé.
+                <div class="add_user_check">
+                    <p>Votre compte a été créé avec succès !</p>
+                </div> 
                 END;
             } catch (AuthException $e) {
                 $html = <<<END
-                <br>Il y a eu un problème lors de la création de votre compte.</br><br>
-                <br>Si vous avez déjà un compte vous pouvez vous y connecter en cliquant sur le lien suivant: </br>
-                <a href='?action=login'>Connexion</a></br>
-                END;
-                $html .= "<br><b>" . $e->getMessage() . "</b>";
+                <div class="add_user_error">
+                    <div class="container_error">
+                        <p class="msg_error">Erreur lors de la création de votre compte !</p>
+                        <img src="./images/colere.png" alt="oiseau colère" class="colere">
+                        <p>Vous possédez déja un compte ? </p>
+                        <a href='?action=signin'>Connexion</a></br>
+                    </div> 
+                    <div class="display_error">
+                        <p>Error: {$e->getMessage()}</p>
+                    </div>       
+                </div>
+END;
             }
         }
         return $html;

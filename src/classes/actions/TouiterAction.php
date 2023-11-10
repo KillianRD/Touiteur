@@ -17,12 +17,12 @@ class TouiterAction extends Actions
         $html = '';
         if ($this->http_method === 'GET') {
             return <<<END
-                <form method='post' action='?action=touiter' enctype='multipart/form-data'>
-                <input type='text' placeholder='Quoi de neuf' name='touit'><br><br>
-                <input type='file' name='image'><br><br>
-                <button type='submit' name='valider' value='validation-form-touiter'>Touiter</button>
-                </form>
-            END;
+                <form method='post' action='?action=touiter' enctype='multipart/form-data' class="nv_touiter">
+                    <input type='text' placeholder='Quoi de neuf' name='touit'>
+                    <input type='file' name='image'>
+                    <button type='submit' name='valider'>Touiter</button>
+                </form> 
+END;
         } else {
             $touitText = $_POST['touit'];
             if($_FILES['image']['error'] === UPLOAD_ERR_OK){
@@ -37,7 +37,7 @@ class TouiterAction extends Actions
                         $u->publierTouit($touitText, $dest);
                         $_SESSION = serialize($u);
 
-                        $html .= "<a href='?action=touiter'>Faire un nouveau Touit</a><br>";
+                        $html .= "<a href='?action=touiter'>Faire un nouveau Touit</a>";
                     } else {
                         $html = "telechargment non valide<br>";
                     }

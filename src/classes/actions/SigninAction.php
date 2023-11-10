@@ -13,14 +13,17 @@ class SigninAction extends Actions
         $html = '';
         if ($this->http_method === 'GET') {
             $html = <<<END
-                <form method='post' action='?action=signin'>
-                <h1>Bienvenue sur Touiteur</h1>
-                <label>Email : </label><input type='text' name='email'>
-                <label>Mot de passe : </label><input type='password' name='mdp'>
-                <button type='submit'>Se connecter</button><br><br>
-                Vous vous êtes jamais inscrit <a href='?action=add-user'>Inscrivez vous dès maintenant</a>
+                <form method='post' action='?action=signin' class="form_signin"> 
+                    <h1 class="h1_signin"><img src="./images/oiseau.png" alt="Logo Touiteur" class="oiseau">Bienvenue sur Touiteur</h1>
+                        <div class="container_signin">
+                        <input type='text' placeholder="Email" name='email'>
+                        <input type='text' placeholder="Mot de passe" name='mdp'>
+                        <button type='submit' class="button_signin">Se connecter</button>
+                        <p class="separation">______________________________________________</p>
+                        <a href='?action=add-user' class="inscription">Créer un compte</a>
+                        </div>
                 </form>
-            END;
+END;
         } else {
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $password = $_POST['mdp'];
@@ -28,15 +31,22 @@ class SigninAction extends Actions
                 Authentification::authenticate($email, $password);
                 $user = unserialize($_SESSION['user']);
                 $html = <<<END
-                    <h1>Bienvenue {$user->pseudo}</h1>
-                    <a href='?action=logout'>Se déconnecter</a>
+                    <div class="connect_check">
+                        <h1>Bienvenue {$this->user->nom}</h1>
+                        <a href='?action=logout'>Se déconnecter</a>
+                    </div> 
                 END;
             } catch (AuthException $e) {
                 $html = <<<END
-                <br>Il y a eu un problème lors de la connexion à votre compte.</br><br>
-                <br><b> Il se pourrait que vous n'avez pas de compte, si vous le souhaitez vous pouvez en créer un en cliquant sur le lien suivant: </b> 
-                <br><a href='?action=add-user'>Inscription</a></br>
-                END;
+<div class="auth_error">
+                    <div class="container_error">
+                        <p class="msg_error">Erreur lors de la connexion à votre compte !</p>
+                        <img src="./images/colere.png" alt="oiseau colère" class="colere">
+                        <p>Vous n'avez pas encore de compte ? </p>
+                        <a href='?action=add-user'>S'inscrire</a>
+                    </div>
+                </div>
+END;
             }
         }
         return $html;

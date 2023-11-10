@@ -17,7 +17,7 @@ class TouitDetailAction extends Actions
         $t = Touit::getTouit($_GET['id']);
         $render = new TouitRender($t);
         $html = $render->render(2);
-        $html .= "<a href='?action=profil'>Retour</a>";
+        $html .= "<a href='?action=profil' class='back'>Retour</a>";
         $_SESSION['ancienneQuery'] = "TouitDetail&id={$_GET['id']}";
         return $html;
     }

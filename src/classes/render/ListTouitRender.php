@@ -74,24 +74,5 @@ class ListTouitRender
         return $list;
     }
 
-    /**
-     * Methode pour afficher tout les touites d'un user
-     * @param User $user : user
-     * @return string : tous les touits d'un user
-     */
-    public function render_user(User $user): string
-    {
-        $html = "<h3>{$user->pseudo}</h3><br>";
-        $html .= "<ul>";
-        foreach ($user->listTouits->touits as $touit) {
-            $touitrender = new TouitRender($touit);
-            $html .= "<li>{$touitrender->render()}</li>";
-        }
-        $html .= "<br></ul>";
-        return $html;
-
-
-    }
-
 
 }
