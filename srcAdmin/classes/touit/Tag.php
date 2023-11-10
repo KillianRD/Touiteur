@@ -1,21 +1,17 @@
 <?php
 
-namespace iutnc\touiteur\touit;
+namespace iutnc\touiteur\admin\touit;
 
-use iutnc\touiteur\db\ConnectionFactory;
-use iutnc\touiteur\exceptions\InvalideTouitException;
 use iutnc\touiteur\exceptions\InvalidPropertyNameException;
-use iutnc\touiteur\exceptions\TagInexistantException;
-use iutnc\touiteur\lists\ListTouit;
-use iutnc\touiteur\render\ListTouitRender;
 use PDO;
 
 class Tag
 {
     private string $nom;
 
-    public function __construct()
+    public function __construct(string $n)
     {
+        $this->nom = $n;
     }
 
     /**

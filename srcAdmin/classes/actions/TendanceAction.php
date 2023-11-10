@@ -1,8 +1,6 @@
 <?php
 
-namespace iutnc\touiteur\admin\dispatch;
-
-use iutnc\touiteur\admin\actions\Actions;
+namespace iutnc\touiteur\admin\actions;
 
 class TendanceAction extends Actions
 {

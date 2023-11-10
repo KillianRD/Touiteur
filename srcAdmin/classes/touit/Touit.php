@@ -1,11 +1,10 @@
 <?php
 
-namespace iutnc\touiteur\touit;
+namespace iutnc\touiteur\admin\touit;
 
-use iutnc\touiteur\db\ConnectionFactory;
-use iutnc\touiteur\exceptions\InvalideTouitException;
-use iutnc\touiteur\exceptions\InvalidPropertyNameException;
-use mysql_xdevapi\Exception;
+
+use iutnc\touiteur\admin\exceptions\InvalideTouitException;
+use iutnc\touiteur\admin\exceptions\InvalidPropertyNameException;
 use PDO;
 
 require_once 'vendor/autoload.php';

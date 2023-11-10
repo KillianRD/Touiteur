@@ -3,23 +3,10 @@
 namespace iutnc\touiteur\admin\dispatch;
 
 
-use iutnc\touiteur\actions\AbonneAction;
-use iutnc\touiteur\actions\AbonnementAction;
-use iutnc\touiteur\actions\AddUserAction;
-use iutnc\touiteur\actions\DesabonnerAction;
-use iutnc\touiteur\actions\DislikerAction;
-use iutnc\touiteur\actions\HomeAction;
-use iutnc\touiteur\actions\LikerAction;
 use iutnc\touiteur\actions\LogoutAction;
-use iutnc\touiteur\actions\OtherProfilAction;
-use iutnc\touiteur\actions\ProfilAction;
-use iutnc\touiteur\actions\SigninAction;
-use iutnc\touiteur\actions\SuivreAction;
-use iutnc\touiteur\actions\SuivreTagAction;
-use iutnc\touiteur\actions\SupprimerTouitAction;
-use iutnc\touiteur\actions\TagAction;
-use iutnc\touiteur\actions\TouitDetailAction;
-use iutnc\touiteur\actions\TouiterAction;
+use iutnc\touiteur\admin\actions\InfluenceurAction;
+use iutnc\touiteur\admin\actions\SigninAction;
+use iutnc\touiteur\admin\actions\TendanceAction;
 use iutnc\touiteur\exceptions\InvalideTouitException;
 
 class Dispatcher
