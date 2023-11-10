@@ -24,14 +24,6 @@ class Tag
         $this->listTouits = new ListTouit();
     }
 
-    /**
-     * @param Touit $t
-     * Ajoute un touit à la liste des touits
-     */
-    public function ajoutTouit(Touit $t): void
-    {
-        $this->listTouits->add($t);
-    }
 
     /**
      * @param string $at
@@ -87,6 +79,24 @@ class Tag
             $insert->bindParam(1, $id);
             $insert->bindParam(2, $requete['id']);
             $insert->execute();
+        }
+    }
+
+    public static function DesabonnementTag(string $recherche, int $id): void
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT id FROM tag WHERE libelle = ?");
+        $requete->bindParam(1, $recherche);
+        $requete->execute();
+        $requete = $requete->fetch(PDO::FETCH_ASSOC);
+
+        if ($requete === false) {
+            throw new TagInexistantException("Le tag n'existe pas");
+        } else {
+            $delete = $db->prepare("DELETE FROM user2tag WHERE id_user = ? AND id_tag = ?");
+            $delete->bindParam(1, $id);
+            $delete->bindParam(2, $requete['id']);
+            $delete->execute();
         }
     }
 }
