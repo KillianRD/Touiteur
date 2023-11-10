@@ -1,7 +1,7 @@
 {
   "autoload": {
     "psr-4": {
-      "iutnc\\touiteur\\" : "src/classes"
+      "iutnc\\touiteur\\" : "src/classes", "iutnc\\touiteur\\admin" : "srcAdmin/classes"
     }
   }
 }
