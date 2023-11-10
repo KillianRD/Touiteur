@@ -37,7 +37,7 @@ class ListTouitRender
                                         LEFT JOIN image i ON ti.id_image = i.id
                                         LEFT JOIN user2touite u2t ON t.id = u2t.id_touite
                                         LEFT JOIN user u ON u2t.id_user = u.id
-                                        ORDER BY t.date DESC");
+                                        ORDER BY t.date desc ");
         $requete->execute();
 
         $touites = [];
@@ -63,7 +63,7 @@ class ListTouitRender
                                     LEFT JOIN user u ON u2t.id_user = u.id
                                     LEFT JOIN touite2tag t2t ON t.id = t2t.id_touite
                                     WHERE (u2t.id_user IN (SELECT id_user2 FROM abonnement WHERE id_user1 = ?) OR u2t.id_user IN (SELECT id_user FROM user2tag WHERE id_tag IN (SELECT id_tag FROM user2tag WHERE id_user = ?))) AND u2t.id_user != ?
-                                    ORDER BY t.date");
+                                    ORDER BY t.date desc");
         $requete->bindParam(1, $iduser1);
         $requete->bindParam(2, $iduser1);
         $requete->bindParam(3, $iduser1);
