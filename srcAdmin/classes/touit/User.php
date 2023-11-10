@@ -4,6 +4,7 @@ namespace iutnc\touiteur\admin\touit;
 require_once 'vendor/autoload.php';
 
 
+use iutnc\touiteur\admin\db\ConnectionFactory;
 use iutnc\touiteur\admin\exceptions\InvalidPropertyNameException;
 use PDO;
 
@@ -50,6 +51,19 @@ class User
         throw new InvalidPropertyNameException("$at: propriété inconnue");
     }
 
-
-
+    public static function listInfluenceur(): string
+    {
+        $db = ConnectionFactory::makeConnection();
+        $requete = $db->prepare("SELECT u.pseudo, COUNT(DISTINCT a.id_user1) AS nombre_abonnes
+                                FROM user u
+                                LEFT JOIN abonnement a ON u.id = a.id_user2
+                                GROUP BY u.id, u.pseudo
+                                ORDER BY nombre_abonnes ASC");
+        $requete->execute();
+        $t = '';
+        foreach ($requete->fetchAll(PDO::FETCH_ASSOC) as $row){
+            $t .= "<p>Pseudo : " . $row["pseudo"] . "Nombre d'abonnées : " . $row['nombre_abonnes'] . "</p>";
+        }
+        return $t;
+    }
 }
